@@ -1,18 +1,24 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <button  v-for="{id ,CountryName } in gdp" :key="id">
+      <router-link :to="`/country/${id}`">{{CountryName}}</router-link>
+    </button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import { loadGDP } from '../firebase'
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
+  setup(){
+    const { gdp } = loadGDP()
+    return { gdp }
   }
 }
+
 </script>
+
+<style lang="scss" scoped>
+  .home{
+    font-family: 'Roboto Mono', monospace;
+  }
+</style>
