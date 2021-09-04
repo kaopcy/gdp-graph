@@ -3,7 +3,6 @@ export const useGDP = async (word = '')=>{
     var GDP = []
     const res = await fetch( '../gdp.json' )
     const json = await res.json()
-
     GDP = json.filter( e => e['CountryName'].toLowerCase().includes(word) )
     console.log('gdp is :');
     console.log(GDP);
@@ -44,4 +43,18 @@ export async function getGdpByID(id){
     }
     return GDP
 }
+
+export const getCountryByID = async (code)=>{
+    var GDP = []
+    var g = []
+    const res = await fetch('../gdp.json')
+    const json = await res.json()
+    GDP = json
+    code.forEach(h => {
+        g.push(GDP.filter( e => e['CountryCode'].toLowerCase().includes(h))[0]);
+    });
+    return  g
+}
+
+
 

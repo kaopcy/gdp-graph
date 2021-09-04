@@ -1,31 +1,34 @@
 <template>  
   <!-- <Echarts/> -->
   <Loading v-if="isLoading"/>
-  <NavBar :isNavBar="isNavBar"/>
+  <Suspense>
+      <template #default>
+        <NavBar :isNavBar="isNavBar"/>
+      </template>
+      <template #fallback>
+        <span>I'm a loading screen, I'm waiting the view to be ready!</span>
+      </template>
+  </Suspense>
+  
   <div id="app" :class="isNavBar? 'right':'normal' ">
-    <h1 v-if="!isMobile">{{gdp}}</h1>
-    <button @click="isNavBar = !isNavBar">asdasdas</button>
+    <button @click="isNavBar = !isNavBar">{{ isNavBar? 'CLOSE':'OPEN'}}</button>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import NavBar from './components/NavBar.vue'
-// import Echarts from './components/Echarts.vue'
 import Loading from './components/loading.vue'
-import { useStore } from 'vuex'
+import { store } from './store'
 import { computed, onMounted , ref } from 'vue'
 
 export default {
   components:{ NavBar , Loading },
   setup() {
-    const store = useStore()
     const isMobile = computed(()=> store.state.isMobile )
     const isLoading = computed(()=> store.state.isLoading )
 
     const isNavBar = ref(true)
-    const gdp = ref()
-    
     onMounted( ()=> { 
       window.innerWidth < 670? store.commit('setIsMobile' , true) : store.commit('setIsMobile' , false)
       window.addEventListener( 'resize' , ()=>{
@@ -35,7 +38,7 @@ export default {
 
 
     })
-    return {  isMobile , isNavBar , gdp , isLoading}
+    return {  isMobile , isNavBar , isLoading}
   }
 } 
 </script>

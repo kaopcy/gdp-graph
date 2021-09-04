@@ -4,7 +4,10 @@
             <div class="circle"></div>
             <div class="text">{{item.name}}</div>
         </div>
-        <div class="add tag">+</div>
+        <div class="add tag" @click="addEvent" >+</div>
+        <div class="select">
+
+        </div>
     </div>
 </template>
 
@@ -12,13 +15,14 @@
 import { ref , onMounted } from 'vue'
 export default {
     name: 'showCountry',
-    setup() {
+    setup(_ , context) {
         const data = ref([
             { name: 'Thailand', color: '' },
             { name: 'Thailand', color: '' },
             { name: 'Thailand', color: '' },
             { name: 'Thailand', color: '' }
         ])
+
         const getColor = ()=>{
             var letters = '0123456789ABCDEF';
             var color = '#';
@@ -26,6 +30,10 @@ export default {
                 color += letters[Math.floor(Math.random() * 16)];
             }
             return color;
+        }
+
+        const addEvent = ()=>{
+            context.emit('addCountry' , 'kuay')
         }
         
         onMounted(()=>{
@@ -37,7 +45,7 @@ export default {
             }, 1000);
         })
 
-        return { data , getColor  }
+        return { data , getColor , addEvent  }
     }
 }
 </script>

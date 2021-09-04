@@ -1,7 +1,8 @@
 import { createStore } from 'vuex'
 
-export default createStore({
+export const store =  createStore({
   state: {
+    GDP: [],
     isMobile: false,
     isLoading: false,
   },

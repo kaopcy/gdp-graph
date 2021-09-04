@@ -1,20 +1,16 @@
 <template>
     <div>
-        
     </div>
-    <apexchart :type="type" height="350"  :options="options" :series="series" v-if="!isLoading"></apexchart>
+    <apexchart :type="type" height="350"  :options="options" :series="series" v-if="!isLoading && series"></apexchart>
 </template>
 
 <script>
-import {  onMounted , computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
+import { computed, ref, watch } from 'vue'
+import { store } from '../store'
 
 export default {
     props: ['countryData' , 'countryKey' , 'type' ],
     setup(props) {
-        const route = useRoute()
-        const store = useStore()
 
         const series = ref(null)
         const options = ref({
@@ -79,13 +75,10 @@ export default {
                 store.commit('setIsLoading' , false)
             }, 500);
         }
-        watch( route , ()=>{
+        watch( getData , ()=>{
             update()
         } )
 
-        onMounted( ()=>{
-            update()
-        })
         return { series , options , isLoading }
     },
 }

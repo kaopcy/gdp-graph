@@ -3,8 +3,8 @@
         <input type="text" placeholder="Searching..." v-model="search">
         <div class="line"></div>
         <div class="link-wrapper">
-            <div class="link" v-for="{id ,CountryName , CountryCode} in country" :key="id" @click="onClick(CountryCode)">
-                <router-link :to="`/country/${CountryCode}`" class="router-link" active-class="active" >{{CountryName}}</router-link>
+            <div class="link" v-for="item in country" :key="item">
+                <router-link :to="`/country/${item}`" class="router-link" active-class="active" >{{item}}</router-link>
             </div>
         </div>
         
@@ -12,26 +12,23 @@
 </template>
 
 <script>
-import { useGDP } from '../useGDP'
-import { onMounted, ref, watch } from 'vue'
+import useFetch from '../composables/use-fetch'
+import { ref, watch } from 'vue'
 import { useRouter , useRoute } from 'vue-router'
 export default {
     props: [ 'isNavBar' ],
-    setup() {
-        const search = ref('')
+    async setup() {
+        const { getAllGDP , getAllCountryName } = useFetch()
+
         const country = ref([])
-        
-        
-        onMounted(async ()=>{
-            const GDP = await useGDP(search.value.toLowerCase())
-            country.value = GDP
-        })
-        
-        watch(search , async ()=>{
-            const GDP = await useGDP(search.value.toLowerCase())
-            country.value = GDP
+        const search = ref('')
+        watch(search , ()=>{
+            country.value = getAllCountryName(search.value)
         } )
-        
+
+        await getAllGDP() //using fetch for getting all data to GDP 
+        country.value = getAllCountryName(search.value)
+
         const router = useRouter()
         const onClick = (id)=>{
             router.replace( { path:`/country/${id}` } )
