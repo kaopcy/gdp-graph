@@ -1,28 +1,37 @@
 <template>
     <div class="wrapper">
-        <div class="tag" v-for="item in data" :key="item">
-            <div class="circle"></div>
+        <div class="tag" v-for="item in getSelectedCountry" :key="item">
+            <div class="circle" v-bind:style="{ backgroundColor: item.color}"></div>
             <div class="text">{{item.name}}</div>
         </div>
-        <div class="add tag" @click="addEvent" >+</div>
-        <div class="select">
-
+        <div class="add tag" @click="toggleSelect = !toggleSelect">+
+            <div class="select" v-if="toggleSelect">
+                <span v-for="countryName in countryNames" :key="countryName" @click.prevent="addEvent(countryName)">{{countryName}}</span>
+            </div>
         </div>
+        
     </div>
 </template>
 
 <script>
-import { ref , onMounted } from 'vue'
+import { ref , onMounted , computed } from 'vue'
+import useFetch from '../composables/use-fetch'
 export default {
+    props: ['selectedCountry'],
     name: 'showCountry',
-    setup(_ , context) {
-        const data = ref([
-            { name: 'Thailand', color: '' },
-            { name: 'Thailand', color: '' },
-            { name: 'Thailand', color: '' },
-            { name: 'Thailand', color: '' }
-        ])
+    setup(props , context) {
+        
+        const { getAllCountryName } = useFetch()
+        const countryNames = ref([])
+        const getSelectedCountry = computed(()=>{
+            var data = []
+            props.selectedCountry.forEach(e => {
+                data.push({ name: e , color: getColor() })
+            });
+            return data
+        })
 
+       
         const getColor = ()=>{
             var letters = '0123456789ABCDEF';
             var color = '#';
@@ -32,20 +41,17 @@ export default {
             return color;
         }
 
-        const addEvent = ()=>{
-            context.emit('addCountry' , 'kuay')
+        const addEvent = (ct)=>{
+            context.emit('addCountry' , ct)
         }
         
         onMounted(()=>{
-            setInterval(() => {
-                const circles =  document.querySelectorAll('.circle')
-                circles.forEach( e=>{
-                    e.style.backgroundColor = getColor()
-                } )
-            }, 1000);
+            countryNames.value = getAllCountryName()
         })
 
-        return { data , getColor , addEvent  }
+        const toggleSelect = ref(false)
+
+        return { getColor , addEvent , countryNames , toggleSelect , getSelectedCountry }
     }
 }
 </script>
@@ -64,9 +70,10 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
+        background-color: #fff;
         .circle{
             order: 0;
-            background-color: #000;
+            
             height: 13px;
             width: 13px;
             border-radius: 50%;
@@ -100,6 +107,20 @@ export default {
             background-color: #303030;
 
         }
+
+    }
+    .select{
+        z-index: 100;
+        position: absolute;
+        top: 0;
+        left: 30px;
+        max-width: 250px;
+        max-height: 500px;
+        color: #000;
+        background-color: rgb(190, 190, 190);
+        overflow-x: scroll;
+        display: flex;
+        flex-direction: column;
 
     }
 }

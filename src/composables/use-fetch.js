@@ -12,12 +12,21 @@ export default function useFetch(){
             console.log(error);        
         }
     }
-    const getCountryByID = (Name)=>{
+    const getCountryDataByID = (Name)=>{
         var g = []
         Name.forEach(h => {
-            g.push(GDP.value.find( e => e.CountryName.toLowerCase() === h.toLowerCase()));
+            console.log(`h is: ${h} type: ${typeof(h)}`);
+            const rawData = GDP.value.find( e => e.CountryName.toLowerCase() === h.toLowerCase() )
+            const justGDP =  Object.values(rawData).map( c=> typeof(c)== 'number' ? c: null).slice(3)
+            g.push(justGDP);
         });
         return  g
+    }
+
+    const getCountryKeyByID = (name)=>{
+        const rawData = GDP.value.find( e => e.CountryName.toLowerCase() === name.toLowerCase())
+        const justKey = Object.keys(rawData).map( c=> c == '' || c== null ? 'null': c).slice(3)
+        return justKey
     }
 
     const getAllCountryName = (word = '')=>{
@@ -28,6 +37,15 @@ export default function useFetch(){
         })
         return countryName
     }
-    return { getAllGDP , getCountryByID , getAllCountryName , GDP }
+
+    const getAllCountryNameFlag = (word = '')=>{
+        const allData = GDP.value.filter( e=> e['CountryName'].toLowerCase().includes(word.toLowerCase()) )
+        const countryName = []
+        allData.forEach(e=>{
+            countryName.push([e['CountryName'] , e['CountryFlag']])
+        })
+        return countryName
+    }
+    return { getAllGDP , getCountryDataByID , getCountryKeyByID , getAllCountryName , getAllCountryNameFlag , GDP }
 
 }

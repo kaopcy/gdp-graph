@@ -1,87 +1,59 @@
 <template>
-  <v-chart class="chart" :option="option" />
+  <div class="chart">
+    <vue3-chart-js
+        :id="chartData.id"
+        :type="chartData.type"
+        :data="chartData.data"
+        :options="chartData.options"
+        ref="chartRef"
+    ></vue3-chart-js>
+  </div>
 </template>
 
 <script>
-import { use } from "echarts/core";
-import { CanvasRenderer } from "echarts/renderers";
-import { PieChart } from "echarts/charts";
-import {
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent
-} from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
-import { ref } from "vue";
-
-use([
-  CanvasRenderer,
-  PieChart,
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent
-]);
+import { computed, ref, watch } from 'vue'
+import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
+import useChart from '../composables/use-chart'
+import { store } from '../store'
 
 export default {
-  name: "HelloWorld",
+  name: 'App',
   components: {
-    VChart
+    Vue3ChartJs,
   },
-  provide: {
-    [THEME_KEY]: "dark"
-  },
-  setup() {
-    const option = ref({
-      title: {
-        text: "Traffic Sources",
-        left: "center"
-      },
-      tooltip: {
-        trigger: "item",
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-      },
-      legend: {
-        orient: "vertical",
-        left: "left",
-        data: ["Direct", "Email", "Ad Networks", "Video Ads", "Search Engines"]
-      },
-      series: [
-        {
-          name: "Traffic Sources",
-          type: "pie",
-          radius: "55%",
-          center: ["50%", "60%"],
-          data: [
-            { value: 335, name: "Direct" },
-            { value: 310, name: "Email" },
-            { value: 234, name: "Ad Networks" },
-            { value: 135, name: "Video Ads" },
-            { value: 1548, name: "Search Engines" }
-          ],
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: "rgba(0, 0, 0, 0.5)"
-            }
-          }
-        }
-      ]
-    });
+  props: ['countryData' , 'countryKey' , 'type' , 'selectedCountry' ],
+  setup (props) {
+    const isMoblie = computed(()=> store.state.isMobile )
+    const { chartData , updateChart } = useChart( isMoblie )
+    const chartRef = ref(null)
 
-    return { option };
-  }
-};
+    const data = computed(()=> props.countryData )
+
+    watch( data , ()=>{
+      console.log('props.countryData');
+      updateChart(props.selectedCountry , props.countryKey , props.countryData )
+      chartRef.value.update()
+    })
+
+    // watch( isMoblie, ()=>{
+      //   console.log(`mobile: ${isMoblie.value}`);
+    //   updateChart(props.selectedCountry , props.countryKey , props.countryData )
+      // isMobileChart( isMoblie.value )
+    //   chartRef.value.update()
+    // } )
+    
+    return {
+      chartData,
+      chartRef
+    }
+  },
+}
 </script>
 
-<style scoped>
-.chart {
-  height: 100vh;
-}
-</style>
-
-<style>
-body {
-  margin: 0;
+<style lang="scss" scoped>
+.chart{
+  width: 90vw;
+  min-height: 70vh;
+  margin: auto;
 }
 </style>
