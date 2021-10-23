@@ -20,12 +20,13 @@ export default {
     components: {
         Vue3ChartJs,
     },
-    setup(){
+    props: ['countryName'],
+    setup(props){
         const { getCountryDataByID , getCountryKeyByID } = useFetch()
-        const { getPredictPrice } = useLinearRegression()
+        const { getFasterPredictPrice } = useLinearRegression()
 
-        const countryData = getCountryDataByID(['Thailand'])
-        const countryKey = getCountryKeyByID('Thailand')
+        const countryData = getCountryDataByID([props.countryName])
+        const countryKey = getCountryKeyByID(props.countryName)
 
         const chartRef = ref(null)
         
@@ -66,7 +67,7 @@ export default {
                     x: countryKey[i].slice(2)
                 })
             }
-            const { predictPrices } = getPredictPrice(days , prices )
+            const { predictPrices } = getFasterPredictPrice(days , prices )
 
             chartData.value.data.datasets[1].data = predictPrices
             chartData.value.data.datasets[0].data = data

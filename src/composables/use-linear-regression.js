@@ -1,5 +1,5 @@
 const tf = require('@tensorflow/tfjs')
-
+import { inv } from 'mathjs'
 export default function useLinearRegression(){
     
     const m = tf.variable(tf.scalar(Math.random()))
@@ -14,8 +14,6 @@ export default function useLinearRegression(){
     const error = (prices , predictPrices)=>{
         return prices.sub(predictPrices).square().mean()
     }
-    // optimizer
-    
     
     const getPredictPrice = ( newDays , newPrices )=>{
         newPrices = newPrices.map(e => 
@@ -49,9 +47,24 @@ export default function useLinearRegression(){
         return { predictPrices: Array.from(predictPrices.dataSync()) } 
     }
 
-    
+    const getFasterPredictPrice = (newDays , newPrices) =>{
+        const days = tf.tensor(newDays)
+        const prices = tf.tensor(newPrices ,[days.shape[0],1])
+        const ones = tf.ones([days.shape[0]])
+        const stack = tf.stack([days,ones]).transpose()
+        
+        const mul = tf.matMul(stack.transpose() , stack)
+
+        const inverse = tf.tensor(inv(mul.arraySync()) , [2,2])
+
+        const W = tf.matMul(tf.matMul(inverse , stack.transpose()) , prices)
+        const z = tf.matMul(stack , W )
+        z.print()
+        return { predictPrices: Array.from(z.dataSync()) } 
+    }
 
     return {
-        getPredictPrice
+        getPredictPrice,
+        getFasterPredictPrice,
     }
 }

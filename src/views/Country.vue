@@ -5,7 +5,7 @@
             <!-- <button @click="type == 'area' ? type='line':type='area'">{{type=='area'? 'line':'area'}}</button> -->
             <Echarts :countryData="countryData" :countryKey="countryKey" :selectedCountry="selectedCountry" />
             <!-- <Chart :countryData="countryData" :countryKey="countryKey" :type="type" :selectedCountry="selectedCountry" /> -->
-            <LinearRegressionChart  />
+            <LinearRegressionChart :countryName="countryName"/>
         </div>
         <div class="linear-regression">
 
