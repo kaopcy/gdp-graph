@@ -5,11 +5,11 @@
         <img :src="aseanGraphic" alt="">
       </div>
       <div class="text">
-        <h1>Linear Regression with Asean GDP.</h1>
+        <h1>Linear Regression</h1>
         <p>&emsp;&emsp;&emsp;Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
         eveniet doloremque asperiores iusto, ad nemo ab nesciunt neque natus,
         </p>
-        <button class="button"> Let's start-></button>
+        <button class="button">EXPLORE!</button>
       </div>
     </div>
   </div>
@@ -30,6 +30,7 @@ export default {
 <style lang="scss" scoped>
 .home{
   overflow: hidden;
+  font-family: var(--primary--font);
   .post{
     display: flex;
     flex-direction: row;
@@ -59,38 +60,41 @@ export default {
       flex-direction: column;
       padding: 0 2rem;
       position: relative;
-      &::before{
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-color: transparent;
-        border-right: 2px solid rgb(202, 202, 202);
-        transform: scaleY(150%);
-        z-index: -1;
-      }
       @media (max-width: 800px) {
         padding-top: 3rem;
+        &::before{
+          opacity: 0;
+        }
       }
       h1{
-        text-align: center;
-        font-family: 'Montserrat' , sans-serif !important;
-        color: #333333;
+        margin-top: 3rem;
+        margin-left: 1rem;
+        text-align: left;
+        color: var(--font--color);
+        font-weight: 700;
+        font-size: 3em;
       }
       p{
-        padding: 3rem;
-        color: #7c7c7D;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        margin-left: 1rem;
+
+        text-align: left;
+        // color: #7c7c7D;
+        color: var(--font--color);
         @media (max-width: 800px) {
           padding: 1rem;
         }
         
       }
       .button{
+        font-weight: 700;
         align-self: end;
 
         padding: .75rem 1rem;
         margin-right: 1rem;
         color: #fff;
-        background-color: rgb(47, 241, 183);
+        background-color: var(--secondary--color);
         border: none;
         cursor: pointer;
         font-size: 1rem;

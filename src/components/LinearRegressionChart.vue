@@ -27,26 +27,39 @@ export default {
 
         const countryData = getCountryDataByID([props.countryName])
         const countryKey = getCountryKeyByID(props.countryName)
-
         const chartRef = ref(null)
-        
         const chartData = ref({
             id: 'linear-regression',
             type: 'line',
             options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        usePointStyle: true,
+                        callbacks: {
+                            labelPointStyle: function() {
+                                return {
+                                    pointStyle: 'circle',
+                                    rotation: 0
+                                };
+                            }
+                        }
+                    }
+                }
             },
             data: {
                 labels:[],
                 datasets: [{
-                    type: 'scatter',
-                    label: 'GDP Data',
+                    type: 'line',
+                    label: props.countryName,
                     data: [],
                     backgroundColor: 'rgb(255, 99, 132)'
                 },{
                     type: 'line',
-                    label: 'Linear Regression',
+                    label: `Linear ${props.countryName}`,
                     data:[],
-                    backgroundColor: 'transparent'
+                    backgroundColor: 'transparent',
+                    borderColor: 'rgb(75, 192, 192)',
                 }],
             }
 
@@ -71,7 +84,6 @@ export default {
 
             chartData.value.data.datasets[1].data = predictPrices
             chartData.value.data.datasets[0].data = data
-            
             console.log(data);
             chartRef.value.update()
         }

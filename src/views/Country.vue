@@ -3,15 +3,12 @@
         <h1>Country: {{countryName}}</h1>
         <div class="country">
             <!-- <button @click="type == 'area' ? type='line':type='area'">{{type=='area'? 'line':'area'}}</button> -->
-            <Echarts :countryData="countryData" :countryKey="countryKey" :selectedCountry="selectedCountry" />
+            <NormalChart :countryData="countryData" :countryKey="countryKey" :selectedCountry="selectedCountry" />
             <!-- <Chart :countryData="countryData" :countryKey="countryKey" :type="type" :selectedCountry="selectedCountry" /> -->
             <LinearRegressionChart :countryName="countryName"/>
         </div>
-        <div class="linear-regression">
-
-        </div>
         <br>
-        <CountryTag class="country-tag" :selectedCountry="selectedCountry" @addCountry="addCountry"/>
+        <Card/>
     </div>
 </template>
 
@@ -19,17 +16,17 @@
 import { computed  , ref , onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 // import Chart from '../components/chart.vue'
-import Echarts from '../components/Echarts.vue'
+import NormalChart from '../components/NormalChart.vue'
 import LinearRegressionChart from '../components/LinearRegressionChart.vue'
-import CountryTag from '../components/CountryTag.vue'
+import Card from '../components/Card.vue'
 import useFetch from '../composables/use-fetch'
 
 export default {
     components:{
         // Chart , 
-        CountryTag ,
-        Echarts,
-        LinearRegressionChart
+        NormalChart,
+        LinearRegressionChart,
+        Card
     },
     setup() {
         const route = useRoute()

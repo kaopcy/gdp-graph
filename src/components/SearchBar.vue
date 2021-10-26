@@ -4,6 +4,7 @@
             <fa :icon="['fas' , 'search']" class="icon search"/>
             <input type="text" placeholder="Searching..." v-model="search">
         </div>
+        <div id="mode" @click="changeTheme">light</div>
         <div class="line"></div>
         <div class="link-wrapper">
             <div class="link" v-for="item in country" :key="item" @click="onClick">
@@ -39,10 +40,15 @@ export default {
             context.emit('autoCloseSearchBar')
             search.value = ''
         }
+        const changeTheme = ()=>{
+            document.body.classList.toggle("dark-theme")
+            context.emit('autoCloseSearchBar')
+        }
 
         const route = useRoute()
+        
 
-        return { country , search , route ,  onClick}
+        return { country , search , route , changeTheme , onClick}
     }
 } 
 </script>
@@ -65,7 +71,7 @@ export default {
     width: 300px;
     margin: 0;
     height: 100vh;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--primary--color);
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
@@ -78,6 +84,7 @@ export default {
         justify-content: center;
         align-items: center;
         .icon{
+            color: var(--font--color);
             margin-right: 10px;
         }
         input{
@@ -89,13 +96,24 @@ export default {
             font-size: 1rem;
             padding: .5rem 2rem .5rem 1rem;
             outline: none;
-            border: 2px solid hsl(0,0%,90%);
+            border: 2px solid var(--border--color);
             border-radius: 9999px;
         }
     }
+
+    #mode{
+        align-self: flex-start;
+        margin-left: 1rem;
+        margin-bottom: 1rem;
+        padding: .5rem 1rem;
+        background-color: #fff;
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    }
+
     .line{
         width: 80%;
-        border-bottom: 2px solid hsl(0,0%,90%);;
+        border-bottom: 2px solid var(--border--color);
     }
     .link-wrapper{
         overflow-y: scroll;
@@ -126,18 +144,19 @@ export default {
             .router-link{
                 font-size: 1.2rem;
                 transition: .3s;
-                color: #000;
+                color: var(--font--color);
                 text-decoration: none;
             }
             &:hover , &:active{
                 padding-bottom: 30px;
-                border: 1px solid hsl(0,0%,90%);
+                border: 1px solid var(--border--color);
                 &::after{
                     font-size: .7rem;
                     position: absolute;
                     right: 0;
                     bottom: 0;
                     content: 'loadmore->';
+                    color: var(--font--color);
                     animation: move-in .5s;
                 }
                 @keyframes move-in {

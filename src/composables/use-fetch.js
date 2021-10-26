@@ -2,10 +2,9 @@ import { ref } from 'vue'
 const GDP = ref([])
 
 export default function useFetch(){
-
     const getAllGDP = async () =>{
         try {
-            const res = await fetch('../gdp.json')
+            const res = await fetch('../GDP_income.json')
             const json = await res.json()
             GDP.value = json
         } catch (error) {

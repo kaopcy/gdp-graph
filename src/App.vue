@@ -10,9 +10,9 @@
   
   <div id="app" :class="isSearchBar? 'right':'normal' ">
     <div class="nav-tab">
-      <div class="menu" @click="isSearchBar = !isSearchBar" >
+      <div class="menu" :class="isSearchBar? 'active':'' " @click="isSearchBar = !isSearchBar" >
         <fa :icon="['fas' , 'bars']" class="menu-icon"/>
-        <router-link to="" class="link menu-text" v-if="!isMobile">{{ isSearchBar? 'CLOSE':'MENU'}}</router-link>
+        <router-link to="" class="link menu-text"  v-if="!isMobile">{{ isSearchBar? 'CLOSE':'MENU'}}</router-link>
       </div>
       <router-link to="/" class="link project-icon">ASEAN gdp</router-link>
       <router-link to="" class="link about">ABOUT US</router-link>
@@ -57,16 +57,38 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Text&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto Mono', monospace;
 }
+
+:root{
+  --primary--font: 'Inter', sans-serif;
+  --danger--color: rgb(248, 61, 61);
+
+
+  --primary--color: #fff;
+  --secondary--color: rgb(92, 247, 200);
+  --border--color: #E6EAEA;
+  --font--color: #202121;
+  --font--color-light: #202121;
+}
+
+.dark-theme{
+  --primary--color: #1c1c21;
+  --secondary--color: #eb548c;
+  --secondary--color--dark: #ee3478;
+  --border--color: #686868;
+  --font--color: #ffffff;
+}
+
 body{
-  background-color: #f4f7f6;
+  background-color: var(--primary--color);
 }
 #app{
+  font-family: var(--primary--font);
   overflow-x: hidden;
   width: 100vw;
   min-height: 100vh;
@@ -98,13 +120,13 @@ body{
     justify-content: space-between;
     align-items: center;
     height: 90px;
-    border-bottom: 2px solid #E6EAEA;
+    border-bottom: 2px solid var(--border--color);
     @media (max-width: 670px) {
       height: 70px;
     }
     .link{
       text-decoration: none;
-      color: #202121;
+      color: var(--font--color);
     }
     .menu{
       @media (max-width: 670px) {
@@ -113,32 +135,35 @@ body{
         gap: 9px;
       }
       position: relative;
-      background-color: #f4f7f6;
+      background-color: var(--primary--color);
       z-index: 201;
       padding: 2rem;
       height: 90px;
-      border-right: 2px solid #E6EAEA;
+      border-right: 2px solid var(--border--color);
       cursor: pointer;
       overflow: hidden;
-      transition: all 0.5s ease-in-out;
-      -webkit-transition: -webkit-transform 0.5s ease-in-out;
+      transition: all 0.3s ease-in-out;
+      -webkit-transition: 0.3s ease-in-out;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 12px;
       &:hover{
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-        .menu-icon{
-          color: rgb(92, 247, 200);
-        }
       }
       .menu-text{
+        color: var(--font--color);
         font-size: 13px;
+        transition: .5s background-color;
       }
       .menu-icon{
+        color: var(--font--color);
         font-size: 15px;
         transition: .3s ease-in;
       }
+    }
+    .active{
+      background-color: var(--danger--color);
     }
     .project-icon{
       font-family: 'Libre Barcode 39 Text', cursive;
@@ -150,27 +175,29 @@ body{
     .about{
       height: 100%;
       padding: 10px 35px;
-      background-color: #49c5b6;
+      background-color: var(--secondary--color);
       color: #fff;
       line-height: 60px;
       text-align: center;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 700;
+      font-size: 1rem;
       cursor: pointer;
       border: none;
       transition: all 0.3s;
       @media (max-width: 670px) {
+        font-size: 0.95rem;
         padding: 0 10px;
         background-color: transparent;
-        color: #404040;
+        color: var(--font--color);
       }
       &:hover{
         @media (max-width: 670px) {
-          color: #404040;
+          color: var(--font--color);
           box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
           background-color: transparent;
         }
-        background-color: #43ab9e;
+        background-color: var(--secondary--color--dark);
       }
     }
   }
