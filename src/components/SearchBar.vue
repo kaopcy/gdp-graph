@@ -20,6 +20,7 @@
 import useFetch from '../composables/use-fetch'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { store } from '../store'
 // import { store } from '../store'
 export default {
     props: [ 'isSearchBar' ],
@@ -42,6 +43,7 @@ export default {
         }
         const changeTheme = ()=>{
             document.body.classList.toggle("dark-theme")
+            store.commit('toggleIsDarkMode')
             context.emit('autoCloseSearchBar')
         }
 

@@ -1,10 +1,9 @@
 <template>
+    <div class="blank"></div>
     <div class="country-wrapper">
         <h1>Country: {{countryName}}</h1>
         <div class="country">
-            <!-- <button @click="type == 'area' ? type='line':type='area'">{{type=='area'? 'line':'area'}}</button> -->
             <NormalChart :countryData="countryData" :countryKey="countryKey" :selectedCountry="selectedCountry" />
-            <!-- <Chart :countryData="countryData" :countryKey="countryKey" :type="type" :selectedCountry="selectedCountry" /> -->
             <LinearRegressionChart :countryName="countryName"/>
         </div>
         <br>
@@ -58,6 +57,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.blank{
+    height: 90px;
+}
 .country-wrapper{
     display: flex;
     flex-direction: column;

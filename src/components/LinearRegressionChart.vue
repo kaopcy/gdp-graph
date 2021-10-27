@@ -45,6 +45,20 @@ export default {
                             }
                         }
                     }
+                },
+                scales: {
+                    xAxes: [{
+                        display: false,
+                        gridLines: {
+                            display: false
+                        },
+                    }],
+                    yAxes: [{
+                        display: false,
+                        gridLines: {
+                            display: false
+                        },
+                    }]
                 }
             },
             data: {

@@ -5,10 +5,12 @@ export const store =  createStore({
     GDP: [],
     isMobile: false,
     isLoading: false,
+    isDarkMode: false,
   },
   mutations: {
     setIsMobile(state , payload ){ state.isMobile = payload },
     setIsLoading(state , payload ){ state.isLoading = payload },
+    toggleIsDarkMode(state ){ state.isDarkMode = !state.isDarkMode }
   },
   getters: {
   },

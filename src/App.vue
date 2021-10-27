@@ -115,6 +115,9 @@ body{
     opacity: 50%;
   }
   .nav-tab{
+    position: absolute;
+    top: 0;
+    width: 100vw;
     display: flex;
     font-display: row;
     justify-content: space-between;
@@ -161,9 +164,10 @@ body{
         font-size: 15px;
         transition: .3s ease-in;
       }
-    }
-    .active{
-      background-color: var(--danger--color);
+      &.active{
+        border-right: none;
+        background-color: var(--danger--color);
+      }
     }
     .project-icon{
       font-family: 'Libre Barcode 39 Text', cursive;
