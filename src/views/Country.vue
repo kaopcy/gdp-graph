@@ -63,7 +63,7 @@ export default {
 .country-wrapper{
     display: flex;
     flex-direction: column;
-    width: 100vw;
+    width: 100%;
     overflow-x: hidden;
     justify-content: center;
     align-items: center;

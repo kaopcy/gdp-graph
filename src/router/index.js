@@ -16,6 +16,34 @@ const routes = [
     path: '/country/:id',
     name: 'Country',
     component: () => import('../views/Country.vue')
+  },
+  {
+    path: '/main-country/:id',
+    name: 'MainCountry',
+    component: () => import('../views/MainCountry/MainCountry.vue'),
+    children: [
+        {
+            path: '',
+            name: 'MainCountry',
+            component: ()=> import('../views/MainCountry/MainCountryHome.vue')
+        },
+        {
+            path: 'data',
+            name: 'Data',
+            component: ()=> import('../views/MainCountry/Data.vue')
+        }, 
+        {
+            path: 'graph',
+            name: 'Graph',
+            component: ()=> import('../views/MainCountry/Graph.vue')
+        } ,
+        {
+            path: 'year',
+            name: 'Year',
+            component: ()=> import('../views/MainCountry/Year.vue')
+        } 
+
+    ],
   }
 ]
 

@@ -29,9 +29,6 @@ export default function useLinearRegression(){
         for (let i = 0; i < 8000 ; i++){
             optimizer.minimize(()=> error(newPricesTF , predict(newYearsTF)))
         }
-        
-        m.print()
-        c.print()
 
         const predictPrices = predict(newYearsTF)
         error(predictPrices , newPrices).print()
@@ -42,22 +39,18 @@ export default function useLinearRegression(){
     const getFasterPredictPrice = (newYears , newPrices) =>{
         const years = tf.tensor(newYears)
         const prices = tf.tensor(newPrices ,[years.shape[0],1])
-        years.print()
-        prices.print()
         const ones = tf.ones([years.shape[0]])
         const stack = tf.stack([years,ones]).transpose()
-        stack.print()
         
         const mul = tf.matMul(stack.transpose() , stack)
-        mul.print()
 
         const inverse = tf.tensor(inv(mul.arraySync()) , [2,2])
-        inverse.print()
 
         const W = tf.matMul(tf.matMul(inverse , stack.transpose()) , prices)
-        W.print()
         const z = tf.matMul(stack , W )
-        z.print()
+
+        error(prices , Array.from(z.dataSync())).print()
+
         return { predictPrices: Array.from(z.dataSync()) } 
     }
 

@@ -9,7 +9,7 @@
         <div class="link-wrapper">
             <div class="link" v-for="item in country" :key="item" @click="onClick">
                 <img :src="item[1]" alt="">
-                <router-link :to="`/country/${item[0]}`" class="router-link" active-class="active" >{{item[0]}}</router-link>
+                <router-link :to="`/main-country/${item[0]}`" class="router-link" active-class="active" >{{item[0]}}</router-link>
             </div>
         </div>
         
@@ -21,23 +21,19 @@ import useFetch from '../composables/use-fetch'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { store } from '../store'
-// import { store } from '../store'
 export default {
     props: [ 'isSearchBar' ],
-    async setup(_ , context) {
-        const { getAllGDP , getAllCountryNameFlag } = useFetch()
-
+    setup(_ , context) {
+        const { getAllCountryNameFlag } = useFetch()
         const country = ref([])
         const search = ref('')
         watch(search , ()=>{
             country.value = getAllCountryNameFlag(search.value)
         } )
 
-        await getAllGDP() //using fetch for getting all data to GDP 
         country.value = getAllCountryNameFlag(search.value)
 
         const onClick = ()=>{
-            // if(store.state.isMobile)
             context.emit('autoCloseSearchBar')
             search.value = ''
         }

@@ -1,105 +1,74 @@
 <template>
-    <div>
-    </div>
-    <div class="chart-wrapper">
-        <apexchart  height="350" :options="options" :series="series"  class="chart"></apexchart>
-    </div>
+    <h2>Plugin Example</h2>
+    <p>
+        This example demonstrates usage of both local and global plugins, zoom
+        being global and data labels being local.
+    </p>
+    <vue3-chart-js v-bind="{ ...lineChart }" />
 </template>
 
 <script>
-import { computed, watch , onMounted } from 'vue'
-import { store } from '../store'
-import useChart from '../composables/use-chart'
-export default {
-    props: ['countryData' , 'countryKey' , 'type' , 'selectedCountry' ],
-    setup(props) {
-        const { series , options , updateSeries , updateOption  } = useChart()
-        
-        // const series = ref(null)
-        // const options = ref({
-        //     chart: {
-        //         id: 'GDP'
-        //     },
-        //     colors: [( { value } )=> {
-        //             if (value < 40) {
-        //                 return 'rgb(0,255,0)'
-        //             } 
-        //             else {
-        //                 return 'rgb(255,0,0)'
-        //             }
-        //         }
-        //     ],
-        //     fill: {
-        //         colors: ['#F44336', '#E91E63', '#9C27B0']
-        //     }
-        // },)
-        const getKey = computed( ()=> props.countryKey )
-        const getData = computed( ()=> props.countryData)
-        const isLoading = computed(()=> store.state.isLoading)
-        updateSeries(props.selectedCountry , getData.value  )
-        updateOption(getKey) 
-        // const update = ()=>{
-        //         let i = 0
-        //         var serie = getData.value.map( e=> { 
-        //             const r = {}
-        //             r.name = props.selectedCountry[i]
-        //             r.data = e
-        //             i++
-        //             return r
-        //         })
-                
-        //         series.value = serie            
-        //         options.value = {
-        //             chart: {
-        //                 id: 'vuechart-example'
-        //             },
-        //             xaxis:{
-        //                 categories: getKey.value
-        //             },
-        //             yaxis:{
-        //                 decimalsInFloat: 2
-        //             },
-        //             dataLabels: {
-        //                 enabled: false,
-        //             },
-        //             tooltip:{
-        //             },
-        //             plotOptions: {
-        //                 area: {
-        //                     fillTo: 'origin',
-        //                 }
-        //             },
-        //             stroke: { 
-        //                 curve: 'straight', 
-        //                 width: 1
-        //             }
-        //         }
-        // }
-        onMounted(()=>{
-            window.addEventListener('keyup' , ()=>{
-                updateSeries(props.selectedCountry , getData.value  )
-                updateOption(getKey)
-                console.log(series);
-                console.log(options);
-            }) 
-        })
-        watch( getData , ()=>{
-            console.log(props.selectedCountry);
-            updateSeries(props.selectedCountry , getData.value  )
-            updateOption(getKey) 
-        } )
-        return { series , options , isLoading }
-    },
-}
-</script>
+import Vue3ChartJs from "@j-t-mcc/vue3-chartjs";
+import zoomPlugin from "chartjs-plugin-zoom";
 
-<style lang="scss" scoped>
-.chart-wrapper{
-    display: flex;
-    justify-content: center;
-    .chart{
-        background-color: #fff;
-        width: 90%;
-    }
-}
-</style>
+Vue3ChartJs.registerGlobalPlugins([zoomPlugin]);
+
+export default {
+    name: "App",
+    components: {
+        Vue3ChartJs,
+    },
+    setup() {
+        const lineChart = {
+            type: "line",
+            data: {
+                labels: [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                ],
+                datasets: [
+                    {
+                        label: "Caffine Consumption",
+                        data: [65, 59, 80, 81, 56, 55, 40],
+                        fill: false,
+                        borderColor: "#41B883",
+                        backgroundColor: "black",
+                    },
+                    {
+                        label: "Productivity",
+                        data: [70, 25, 110, 90, 5, 60, 30],
+                        fill: false,
+                        borderColor: "#00D8FF",
+                        tension: 0.5,
+                        backgroundColor: "blue",
+                    },
+                ],
+            },
+            options: {
+                plugins: {
+                    zoom: {
+                        zoom: {
+                            wheel: {
+                                enabled: true,
+                            },
+                            pinch: {
+                                enabled: true,
+                            },
+                            mode: "y",
+                        },
+                    },
+                },
+            },
+        };
+
+        return {
+            lineChart,
+        };
+    },
+};
+</script>

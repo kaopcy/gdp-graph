@@ -1,16 +1,20 @@
 import { ref } from 'vue'
+import json from '../../public/GDP_income.json'
 const GDP = ref([])
 
+
+
 export default function useFetch(){
-    const getAllGDP = async () =>{
+    const getAllGDP = () =>{
         try {
-            const res = await fetch('../GDP_income.json')
-            const json = await res.json()
             GDP.value = json
         } catch (error) {
             console.log(error);        
         }
     }
+
+    getAllGDP()
+
     const getCountryDataByID = (Name)=>{
         var g = []
         Name.forEach(h => {
@@ -45,6 +49,6 @@ export default function useFetch(){
         })
         return countryName
     }
-    return { getAllGDP , getCountryDataByID , getCountryKeyByID , getAllCountryName , getAllCountryNameFlag , GDP }
+    return { getCountryDataByID , getCountryKeyByID , getAllCountryName , getAllCountryNameFlag , GDP }
 
 }

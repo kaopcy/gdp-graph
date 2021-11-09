@@ -57,7 +57,7 @@ h1 {
   font-family: 'Open Sans', -apple-system, 'Segoe UI', sans-serif;
   font-size: 50px;
   font-weight: bold;
-  color: hsl(0, 0%, 100%);
+  color: #fff;
   box-sizing: border-box;
 }
 

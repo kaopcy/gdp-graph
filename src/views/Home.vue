@@ -3,14 +3,17 @@
     <div class="home">
         <div class="post">
             <div class="img-wrapper">
-                <img :src="isDarkMode ? aseanGraphicDark : aseanGraphicLight" alt="" />
+                <img
+                    :src="isDarkMode ? aseanGraphicDark : aseanGraphicLight"
+                    alt=""
+                />
             </div>
             <div class="text">
                 <h1>Linear Regression</h1>
                 <p>
-                    &emsp;&emsp;&emsp;Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit. Possimus eveniet doloremque asperiores iusto, ad nemo ab
-                    nesciunt neque natus,
+                    &emsp;&emsp;&emsp;Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Possimus eveniet doloremque asperiores
+                    iusto, ad nemo ab nesciunt neque natus,
                 </p>
                 <button class="button">EXPLORE!</button>
             </div>
@@ -18,28 +21,28 @@
 
         <div class="post-youtube">
             <div class="text-wrapper">
-                <h1>What is Linear regression ?</h1> 
-                <p>&emsp;&emsp;&emsp;Linear regression is a basic and commonly used type of predictive analysis. Let learn how it work in 5 minute !</p> 
+                <h1>What is Linear regression ?</h1>
+                <p>
+                    &emsp;&emsp;&emsp;Linear regression is a basic and commonly
+                    used type of predictive analysis. Let learn how it work in 5
+                    minute !
+                </p>
             </div>
-            <iframe 
+            <iframe
                 class="frame-youtube"
-                src="https://www.youtube.com/embed/Ep8Ri2EKhrs" 
-                title="YouTube video player" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
+                src="https://www.youtube.com/embed/Ep8Ri2EKhrs"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+            ></iframe>
         </div>
 
         <div class="post2-wrapper">
-            <div class="tensorflow-wrapper">
-
-            </div>
-            <div class="chartjs-wrapper">
-
-            </div>
+            <div class="tensorflow-wrapper"></div>
+            <div class="chartjs-wrapper"></div>
         </div>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -53,7 +56,7 @@ export default {
     setup() {
         const isDarkMode = computed(() => store.state.isDarkMode);
         onMounted(() => {
-            window.addEventListener("keyup", ()=>{
+            window.addEventListener("keyup", () => {
                 console.log(isDarkMode.value);
             });
         });
@@ -63,15 +66,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.blank{
-    width: 100vw;
+.blank {
+    width: 100%;
     height: 90px;
 }
 
 .home {
     overflow: hidden;
     font-family: var(--primary--font);
-    
+
     .post {
         display: flex;
         flex-direction: row;
@@ -91,7 +94,7 @@ export default {
                 display: block;
                 width: 100%;
                 height: 100%;
-            } 
+            }
         }
         .text {
             flex: 3;
@@ -105,7 +108,7 @@ export default {
                 &::before {
                     opacity: 0;
                 }
-                h1{
+                h1 {
                     margin-top: 0;
                 }
             }
@@ -150,15 +153,15 @@ export default {
             }
         }
     }
-    
-    .post-youtube{
-        width: 100vw;
+
+    .post-youtube {
+        width: 100%;
         position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        .text-wrapper{
+        .text-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -166,20 +169,19 @@ export default {
             color: var(--font--color);
             flex-direction: column;
             max-width: 80%;
-            h1{
+            h1 {
                 font-size: 3rem;
                 margin-bottom: 2rem;
             }
-            p{
-                font-size: 1.25rem;   
+            p {
+                font-size: 1.25rem;
             }
         }
-        .frame-youtube{
+        .frame-youtube {
             width: 70%;
-            height: calc(0.4*100vw);
+            height: calc(0.4 * 100vw);
             margin-bottom: 3rem;
         }
-
     }
 }
 </style>
