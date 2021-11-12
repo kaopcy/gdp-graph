@@ -66,13 +66,15 @@ export default {
 @keyframes fade {
     0%{
         transform: translateX(100%);
+        opacity: 0;
     }
     100%{
         transform: translateX(0%);
+        opacity: 100%;
     }
 }
 .data{
-    animation: fade .25s;
+    animation: fade .5s;
     position: relative;
     width: 100%;
     height: 100%;

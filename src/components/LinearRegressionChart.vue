@@ -1,5 +1,6 @@
 <template>
     <div class="wrapper">
+        <h2>{{countryName}}</h2>
         <vue3-chart-js
             :id="chartData.id"
             type="line"
@@ -7,15 +8,16 @@
             :options="options"
             ref="chartRef"
         />
-        <button @click="updateChart()">Update</button>
     </div>
 </template>
 
 <script>
+import { onMounted, ref, watch } from "vue";
+import { store } from '../store'
 import Vue3ChartJs from "@j-t-mcc/vue3-chartjs";
+
 import useFetch from "../composables/use-fetch";
 import useLinearRegression from "../composables/use-linear-regression";
-import { onMounted, ref } from "vue";
 export default {
     components: {
         Vue3ChartJs,
@@ -25,6 +27,10 @@ export default {
             type: String,
             require: true,
         },
+        compareCountry: {
+            type: String,
+            require: true,
+        }
     },
     setup(props) {
         const { getCountryDataByID, getCountryKeyByID } = useFetch();
@@ -33,7 +39,7 @@ export default {
         const countryData = getCountryDataByID([props.countryName]);
         const countryKey = getCountryKeyByID(props.countryName);
         const chartRef = ref(null);
-
+        
         const options = {
             legend: {
                 position: "top",
@@ -67,6 +73,9 @@ export default {
         const chartData = ref({
             id: "linear-regression",
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
                 legend: {
                     position: "top",
                     labels: {
@@ -96,56 +105,52 @@ export default {
                 },
             },
             data: {
-                labels: [],
-                color: "rgb(255, 99, 132)",
-                datasets: [
-                    {
-                        type: "line",
-                        label: props.countryName,
-                        data: [],
-                        fill: false,
-                        borderColor: "#41B883",
-                        backgroundColor: "black",
-                    },
-                    {
-                        type: "line",
-                        label: `Linear ${props.countryName}`,
-                        data: [],
-                        backgroundColor: "transparent",
-                        borderColor: "rgb(75, 192, 192)",
-                    },
-                ],
             },
         });
-        const updateChart = () => {
-            chartData.value.data.labels = [];
-            chartData.value.data.datasets[1].data = [];
-            console.log(countryKey.length);
-            const data = [];
-            const days = [];
-            const prices = [];
-            for (let i = 0; i < countryKey.length; i++) {
-                days.push(i);
-                prices.push(countryData[0][i]);
-                chartData.value.data.labels.push(countryKey[i].slice(2));
-                data.push({
-                    y: countryData[0][i],
-                    x: countryKey[i].slice(2),
-                });
-            }
-            const { predictPrices } = getFasterPredictPrice(days, prices);
+        const addDataChart = (CountryData , name) => {
+            const days = []
+            const curDataNum = chartData.value.data.datasets.length / 2
+            console.log(`curDataNum: ${curDataNum}`);
+            for ( let i=0 ; i< CountryData[0].length ; i++ ) days.push(i)
+            
+            const { predictPrices } = getFasterPredictPrice(days, CountryData[0]);
 
-            chartData.value.data.datasets[1].data = predictPrices;
-            chartData.value.data.datasets[0].data = data;
-            console.log(data);
+            chartData.value.data.datasets.push({
+                data: CountryData[0],
+                type: "line",
+                label: name,
+                fill: false,
+                borderColor: "hsl(200,100,100)",
+                backgroundColor: "black",
+            })
+            chartData.value.data.datasets.push({
+                data: predictPrices,
+                type: "line",
+                label: `Reg ${name}`,
+                backgroundColor: "transparent",
+                borderColor: "hsl(360,50,70)",
+            })
             chartRef.value.update();
         };
 
         onMounted(() => {
-            updateChart();
+            chartData.value.data.labels = [];
+            for (let i = 0; i < countryKey.length; i++) {
+                chartData.value.data.labels.push(countryKey[i].slice(2));
+            }
+            addDataChart(countryData , props.countryName);
         });
+        
+        watch(()=> props.compareCountry , ()=>{
+            const anotherCountryData = getCountryDataByID([props.compareCountry])
+            addDataChart(anotherCountryData , props.compareCountry );
+        })
 
-        return { chartRef, chartData, updateChart , options };
+        watch(()=> store.state.isMobile , ()=>{
+            console.log('update isMobile');
+        })
+
+        return { chartRef, chartData, addDataChart , options };
     },
 };
 </script>

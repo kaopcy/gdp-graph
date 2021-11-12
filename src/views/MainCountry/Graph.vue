@@ -1,7 +1,5 @@
 <template>
     <div class="graph">
-
-
         <router-link :to="`/main-country/${route.params.id}/data`" class="link">
             <span class="span1"></span>
             <span class="span2"></span>
@@ -11,27 +9,39 @@
             <span class="span2"></span>
         </router-link>
 
+        <Dropdown :currentCountry="route.params.id"  @getSelectedCountry="getSelectedCountry"/>
+
         <div class="graph-wrapper">
-            <LinearRegressionChart  :countryName="route.params.id"/>
+            <LinearRegressionChart  :countryName="route.params.id" :compareCountry="compareCountry" />
         </div>
     </div>
 </template>
 
 <script>
+import { ref } from '@vue/reactivity'
 import { useRoute } from 'vue-router'
 // import  LinearRegressionChart from '../../components/chart.vue'
 import  LinearRegressionChart from '../../components/LinearRegressionChart'
+import Dropdown from '../../components/MainPost/Dropdown.vue'
 
 export default {
     name: 'Data',
     components:{
         LinearRegressionChart,
+        Dropdown,
     },
     setup() {
         const route = useRoute()
+        const compareCountry = ref('')
+        const getSelectedCountry = (payload)=>{
+            compareCountry.value = payload
+            console.log(`country: ${compareCountry.value}`);
+        }
 
         return {
-            route
+            route,
+            getSelectedCountry,
+            compareCountry
         }
     }
 }
@@ -41,9 +51,11 @@ export default {
 @keyframes fade {
     0%{
         transform: translateX(100%);
+        opacity: 0;
     }
     100%{
         transform: translateX(0%);
+        opacity: 100%;
     }
 }
 .graph{
@@ -53,8 +65,12 @@ export default {
     height: 100%;
 
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+    }
 
     .link{
         &:nth-child(1){
@@ -96,10 +112,14 @@ export default {
     }
 
     .graph-wrapper{
-        width: 80%;
+        width: 700px;
         border-radius: 5px;
         background-color: rgba(255, 255, 255, 0.911);
         padding: 2rem;
+        @media (max-width: 600px) {
+            width: 100%;
+        }
+
     }
 
 }

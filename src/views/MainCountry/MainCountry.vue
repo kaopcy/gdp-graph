@@ -17,7 +17,7 @@ export default {
         const route = useRoute()
 
         const isBottomBar = ref(false)
-
+        
         onMounted(() => {
             console.log( route.params.id );
         })
