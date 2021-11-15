@@ -39,7 +39,7 @@ export default {
     overflow: hidden;
     img{
         position: absolute;
-        filter: blur(1px);
+        // filter: blur(1px);
         width: 100%;
         height: 100%;
         object-fit: cover;

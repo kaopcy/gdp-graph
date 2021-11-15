@@ -7,10 +7,10 @@
         <div id="mode" @click="changeTheme">light</div>
         <div class="line"></div>
         <div class="link-wrapper">
-            <div class="link" v-for="item in country" :key="item" @click="onClick">
+            <router-link :to="`/main-country/${item[0]}`" class="link" v-for="item in country" :key="item" @click="onClick">
                 <img :src="item[1]" alt="">
-                <router-link :to="`/main-country/${item[0]}`" class="router-link" active-class="active" >{{item[0]}}</router-link>
-            </div>
+                <div class="router-link" active-class="active" >{{item[0]}}</div>
+            </router-link>
         </div>
         
     </div>
@@ -117,6 +117,7 @@ export default {
         overflow-y: scroll;
         width: 100%;
         .link{
+            text-decoration: none;
             display: flex;
             flex-direction: row;
             cursor: pointer;

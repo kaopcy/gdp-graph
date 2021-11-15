@@ -12,7 +12,7 @@
         />
         <ul class="value-list">
             <li v-for="(i , index) in filterdCountry" :key="i" @click="click(i)">
-                <img :src="filterdCountryFlag[index][1]" alt="" width="10">
+                <img :src="filterdCountryFlag[index][1]" alt="" >
                 <span>{{ i }}</span>
             </li>
         </ul>
@@ -23,6 +23,7 @@
 <script>
 import { computed, onMounted, ref } from "@vue/runtime-core";
 import useFetch from "../../composables/use-fetch";
+import useCompareCountry  from '../../composables/useCompareCountry'
 
 export default {
     name: "Dropdown",
@@ -32,8 +33,10 @@ export default {
             require: true,
         },
     },
-    setup(props , { emit }) {
+    setup(props ) {
         const { getAllCountryName , getAllCountryNameFlag } = useFetch();
+        const { setCompareCountry } = useCompareCountry();
+
         const allCountry = getAllCountryName();
         const allFlag = getAllCountryNameFlag();
 
@@ -50,9 +53,7 @@ export default {
         })
 
         const click = (value)=>{
-            selectedCountry.value = value;
-            emit('getSelectedCountry', selectedCountry.value)
-
+            setCompareCountry(value)
         }
 
         onMounted(() => {
@@ -119,15 +120,6 @@ export default {
             });
         });
 
-        // watch(selectedCountry, () => {
-        //     filterdCountry.value.forEach((e) => {
-        //         if (e.toLowerCase() === selectedCountry.value.toLowerCase()) {
-        //             arrayOfSelectedCountry.value.push(selectedCountry.value)
-        //             console.log(arrayOfSelectedCountry.value);
-        //         }
-        //     });
-        // });
-
         return {
             filterdCountry,
             filterdCountryFlag,
@@ -145,9 +137,8 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    border: 3px solid red;
     .list{
-        width: 18rem;
+        width: 100%;
         font-family: var(--primary--font);
         text-transform: uppercase;
         font-weight: 600;
@@ -156,7 +147,6 @@ export default {
         font-size: 1.1rem;
         padding: 1rem;
         background-color: #fafcfd;
-        border: 3px solid transparent;
         transition: 0.3s ease-in-out;
 
         &::-webkit-input-placeholder {
@@ -165,7 +155,6 @@ export default {
     }
 }
 .main-country{
-    height: 4rem;
     font-family: var(--primary--font);
     text-transform: uppercase;
     font-weight: 600;
@@ -180,7 +169,7 @@ export default {
 .input-wrapper {
     position: relative;
     height: 4rem;
-    width: 18rem;
+    width: 100%;
 }
 
 .chosen-value,
@@ -253,6 +242,7 @@ export default {
         cursor: pointer;
         transition: background-color 0.3s;
         opacity: 1;
+        z-index: 1000;
         img{
             width: 50px;
             height: 30px;

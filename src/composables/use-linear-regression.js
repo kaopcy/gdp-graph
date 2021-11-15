@@ -1,12 +1,9 @@
 const tf = require('@tensorflow/tfjs')
-import { ref }   from 'vue'
 import { inv } from 'mathjs'
 export default function useLinearRegression(){
     
     const m = tf.variable(tf.scalar(Math.random()))
     const c = tf.variable(tf.scalar(Math.random()))
-
-    const isLoading = ref(false);
 
     const predict = (years)=>{
         return tf.tidy(()=>{
@@ -14,7 +11,11 @@ export default function useLinearRegression(){
         })
     }
 
-    const error = (prices , predictPrices)=>{
+    const getRMSE = (prices , predictPrices)=>{
+        return prices.sub(predictPrices).square().mean().sqrt()
+    }
+
+    const getMSE = (prices , predictPrices)=>{
         return prices.sub(predictPrices).square().mean()
     }
     
@@ -30,37 +31,35 @@ export default function useLinearRegression(){
         const optimizer = tf.train.sgd(learningRate)
         
         for (let i = 0; i < 8000 ; i++){
-            optimizer.minimize(()=> error(newPricesTF , predict(newYearsTF)))
+            optimizer.minimize(()=> getRMSE(newPricesTF , predict(newYearsTF)))
         }
 
         const predictPrices = predict(newYearsTF)
-        error(predictPrices , newPrices).print()
+        getRMSE(predictPrices , newPrices).print()
 
         return { predictPrices: Array.from(predictPrices.dataSync()) } 
     }
 
     const getFasterPredictPrice = (newYears , newPrices) =>{
-        isLoading.value = true
         const years = tf.tensor(newYears)
         const prices = tf.tensor(newPrices ,[years.shape[0],1])
         const ones = tf.ones([years.shape[0]])
         const stack = tf.stack([years,ones]).transpose()
         
-        stack.print()
-
         const mul = tf.matMul(stack.transpose() , stack)
         
         const inverse = tf.tensor(inv(mul.arraySync()) , [2,2])
         
         const W = tf.matMul(tf.matMul(inverse , stack.transpose()) , prices)
         const z = tf.matMul(stack , W )
-                
-        error(prices , Array.from(z.dataSync())).print()
         
-        isLoading.value = false
-        console.log(`isLoading  ${isLoading.value}`);
+        console.log(`normal value: ${newPrices}`);
+        console.log(`predicted value: ${Array.from(z.dataSync())}`);
 
-        return { predictPrices: Array.from(z.dataSync()) } 
+        const RMSE = Array.from(getRMSE(prices , z).dataSync())[0]
+        const MSE = Array.from(getMSE(prices , z).dataSync())[0]
+        
+        return { predictPrices: Array.from(z.dataSync()) , RMSE , MSE } 
     }
 
     return {
