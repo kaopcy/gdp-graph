@@ -132,13 +132,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$font-color: #404244;
+
 .wrapper{
     height: 4rem;
     display: flex;
     flex-direction: row;
-    align-items: center;
     .list{
-        width: 100%;
         font-family: var(--primary--font);
         text-transform: uppercase;
         font-weight: 600;
@@ -155,21 +155,20 @@ export default {
     }
 }
 .main-country{
+    flex: 1;
     font-family: var(--primary--font);
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 4px;
-    height: 4rem;
-    font-size: 1.1rem;
-    padding: 1rem;
-    background-color: #fafcfd;
-    border: 3px solid transparent;
+    color: $font-color;
+    font-weight: 700;
+    font-size: 1.5rem;
     transition: 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .input-wrapper {
+    flex: 1;
+    
     position: relative;
-    height: 4rem;
-    width: 100%;
 }
 
 .chosen-value,
@@ -182,16 +181,12 @@ export default {
 
 .chosen-value {
     font-family: var(--primary--font);
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 4px;
     height: 4rem;
-    font-size: 1.1rem;
-    padding: 1rem;
-    background-color: #fafcfd;
-    border: 3px solid transparent;
+    color: $font-color;
+    font-weight: 700;
+    font-size: 1.5rem;
     transition: 0.3s ease-in-out;
-
+    border: none;
     &::-webkit-input-placeholder {
         color: #333;
     }
@@ -204,7 +199,7 @@ export default {
             color: #333;
         }
     }
-
+    
     &:focus,
     &.open {
         box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2);

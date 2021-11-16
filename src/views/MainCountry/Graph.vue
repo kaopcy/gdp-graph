@@ -12,14 +12,20 @@
             <SidePost/>
         </div>
         <div class="right-wrapper">
+            <h1>
+                Linear Regression
+            </h1>
             <div class="graph-wrapper">
                 <LinearRegressionChart  :countryName="route.params.id" :compareCountry="compareCountry" />
             </div>
+            <h1>
+                Data Table 
+            </h1>
             <div class="table-data">
                 <div class="table">
                     <div class="head">
                         <span>{{route.params.id}}</span>
-                        <span class="color"  :style="`background-color:${'red'};`"></span>
+                        <span class="color"  :style="`background-color:${'#ff6384'};`"></span>
                     </div>
                     <div class="body">
                         <div class="column">
@@ -54,7 +60,7 @@
                 <div class="table" v-if="store.state.compareCountry.predictedPrice.length > 0">
                     <div class="head">
                         <span>{{compareCountry}}</span>
-                        <span class="color" :style="`background-color:${'blue'};`"></span>
+                        <span class="color" :style="`background-color:${'#52c2c2'};`"></span>
                     </div>
                     <div class="body">
                         <div class="column">
@@ -135,6 +141,34 @@ export default {
         opacity: 100%;
     }
 }
+
+$font-color: #404244;
+
+
+h1{
+    color: $font-color;
+    padding: 2rem 0rem;
+    font-weight: 700;
+    font-size: 2.2rem;
+    width: 80%;
+    border-bottom: 1px dashed rgb(207, 207, 207);
+    position: relative;
+    cursor: pointer;
+    &:hover{
+        &::after{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            content: '#';
+            color: rgb(101, 173, 255);
+            position: absolute;
+            top: 0;
+            left: -40px;
+        }
+    }
+}
+
 .graph{
     animation: fade .5s;
     position: relative;
@@ -143,20 +177,24 @@ export default {
     display: flex;
     align-items: center;
     margin-top: 2rem;
-
+    padding: 0 4rem;
+    @media (max-width: 700px) {
+        flex-direction: column;
+    }
     .left-wrapper{
         position: relative;
-        margin:0 1rem 0rem 3rem;
-        height: 600px;
+        height: 630px;
         flex: 2;
+        background-color: rgb(255, 255, 255);
+        display: flex;
+        padding-left: 2rem;
     }
 
     .right-wrapper{
-        margin:0 3rem 0rem 1rem;
         position: relative;
-        height: 600px;
+        height: 630px;
         flex: 5;
-        background-color: rgba(255, 255, 255, 0.89);
+        background-color: rgb(255, 255, 255);
         padding: 1rem;
         display: flex;
         flex-direction: column;
@@ -164,12 +202,13 @@ export default {
         overflow-x: hidden;
         overflow-y: scroll;
         .table-data{
+            color: $font-color;
             margin-top: 2rem;
             width: 100%;
             display: flex;
             justify-content: space-evenly;
             .table{
-                box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+                box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
                 display: flex;
                 flex-direction: column;
                 margin-bottom: 5rem;
@@ -177,10 +216,10 @@ export default {
                 .head{
                     display: flex;
                     justify-content: center;
-                    padding: .5rem 0;
-                    background-color: #fff;
-                    border: 1px solid grey;
-                    font-weight: normal;
+                    padding: .8rem 0;
+                    background-color: #f3f5f7;
+                    border-left: 10px solid #42b983;
+                    font-weight: 700;
                     display: flex;
                     align-items: center;
                     .color{
@@ -195,18 +234,21 @@ export default {
                     flex-direction: row;
                 }
                 .column{
-                    border-left: 1px solid grey;
+                    border-left: 2px solid rgb(241, 241, 241);
                     display: flex;
                     flex-direction: column;
                     font-size: .76rem;
                     span{
                         padding: .2rem .7rem;
                         &:nth-child(1){
-                            border-bottom: 1px solid grey;
+                            font-weight: 700;
+
+                            padding: .5rem .7rem;
+                            border-bottom: 1px solid rgb(218, 218, 218);
                             background-color: rgba(255, 255, 255, 0.897);
                         }
                         &:nth-child(even){
-                            background-color: rgb(238, 238, 238);
+                            background-color: rgb(247, 247, 247);
                         }
 
                     }
@@ -263,11 +305,11 @@ export default {
 
     .graph-wrapper{
         margin-top: 2rem;
-        width: 90%;
+        width: 80%;
         border-radius: 5px;
         background-color: rgba(255, 255, 255, 0.911);
         padding: 2rem;
-        box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         @media (max-width: 600px) {
             width: 100%;
         }

@@ -7,7 +7,7 @@
             <span>COUNTRY</span>
             <h1>{{route.params.id}}</h1>
         </div>
-        <button @click="isBottomBar = !isBottomBar" :class="{ 'trigger-bottom-bar' : isBottomBar }" >{{isBottomBar ? 'CLOSE' : 'Click Here'}}</button>
+        <button @click="isBottomBar = !isBottomBar" :class="{ 'trigger-bottom-bar' : isBottomBar }" >{{isBottomBar ? 'CLOSE' : 'CLICK'}}</button>
 
     </div>
 </template>
@@ -115,22 +115,25 @@ export default {
         top: 80%;
         transform: translateX(-50%);
         font-family: var(--secondary--font);
-        font-size: 1.5rem;
-        font-weight: 300;
+        font-size: 2rem;
         padding: .5rem 2rem;
-        color: #fff;
-        outline: 2px solid white;
         cursor: pointer;
-        background-color: rgba(255, 255, 255, 0.171);
+        background-color: rgb(255, 255, 255);
         transition: .25s;
+        border: none;
+        background-color: #fff;
+        color: #000;
+        font-weight: 1000;
+        mix-blend-mode: screen;
 
         &.trigger-bottom-bar{
             top: 90%;
         }
 
         &:hover {
-            outline: 3px solid white;
-            background-color: rgba(121, 121, 121, 0.171);
+            background-color: rgb(240, 64, 64);
+            mix-blend-mode: normal;
+            color: #fff;
         }
 
     }

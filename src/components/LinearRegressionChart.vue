@@ -1,6 +1,13 @@
 <template>
     <div class="wrapper">
-        <h2>{{countryName}}  <span>vs</span>  {{compareCountry === '' ? '..' : compareCountry}}</h2>
+        <div class="header">
+            <div class="text">
+                {{countryName}}  <span>vs</span>  {{compareCountry === '' ? '..' : compareCountry}}
+            </div>
+            <div class="clear-btn" @click="clear">
+                CLEAR <fa :icon="['fas' , 'arrow-right']" class="icon"/>
+            </div>
+        </div>
         <vue3-chart-js
             :id="chartData.id"
             type="line"
@@ -19,6 +26,7 @@ import zoomPlugin from "chartjs-plugin-zoom";
 
 import useFetch from "../composables/use-fetch";
 import useLinearRegression from "../composables/use-linear-regression";
+import useCompareCountry from '../composables/useCompareCountry'
 
 Vue3ChartJs.registerGlobalPlugins([zoomPlugin]);
 
@@ -31,15 +39,13 @@ export default {
             type: String,
             require: true,
         },
-        compareCountry: {
-            type: String,
-            require: true,
-        }
+        
     },
     setup(props) {
         const { getCountryDataByID, getCountryKeyByID } = useFetch();
         const { getFasterPredictPrice } = useLinearRegression();
-
+        const { compareCountry , setCompareCountry } = useCompareCountry();
+        
         const countryData = getCountryDataByID([props.countryName]);
         const countryKey = getCountryKeyByID(props.countryName);
         const chartRef = ref(null);
@@ -127,16 +133,18 @@ export default {
             const days = []
             for ( let i=0 ; i< CountryData[0].length ; i++ ) days.push(i)
             
-            const { predictPrices , MSE , RMSE } = getFasterPredictPrice(days, CountryData[0]);
+            const { predictPrices , MSE , RMSE , MC } = getFasterPredictPrice(days, CountryData[0]);
 
             
 
             if (store.state.currentCountry.predictedPrice.length == 0){
+                console.log(`w: ${MC.M} , C: ${MC.C}`);
                 store.commit('setPrice' , {
                     curReal: CountryData[0],
                     curPredict: predictPrices,
                     MSE: MSE,
                     RMSE: RMSE,
+                    MC: MC,
                 })
             }
             else{
@@ -153,8 +161,8 @@ export default {
                     fill: false,
                     borderColor: color.primary,
                     backgroundColor: color.primary,
-                    borderWidth: 1,
-                    pointRadius: 1,
+                    borderWidth: 2,
+                    pointRadius: 2,
                 })
                 chartData.value.data.datasets.push({
                     data: predictPrices,
@@ -163,8 +171,8 @@ export default {
                     backgroundColor: color.secondary,
                     borderColor: color.secondary,
                     color: color.secondary,
-                    pointRadius: 1,
-                    borderWidth: 1
+                    pointRadius: 2,
+                    borderWidth: 2
                 })
 
             }
@@ -176,8 +184,8 @@ export default {
                     fill: false,
                     borderColor: color.primary,
                     backgroundColor: color.primary,
-                    borderWidth: 1,
-                    pointRadius: 1,
+                    borderWidth: 2,
+                    pointRadius: 2,
                 })
                 chartData.value.data.datasets[3] = ({
                     data: predictPrices,
@@ -186,32 +194,43 @@ export default {
                     backgroundColor: color.secondary,
                     borderColor: color.secondary,
                     color: color.secondary,
-                    pointRadius: 1,
-                    borderWidth: 1
+                    pointRadius: 2,
+                    borderWidth: 2
                 })
             }
             console.log(`length : ${chartData.value.data.datasets.length}`);
             chartRef.value.update();
         };
 
+        const clear = ()=>{
+            if (chartData.value.data.datasets.length > 2){
+                chartData.value.data.datasets.pop()
+                chartData.value.data.datasets.pop()
+                store.commit('clearCompareData')
+                setCompareCountry('')
+                chartRef.value.update();
+
+            }
+        }
+
         onMounted(() => {
-            store.commit('clearCountryData')
             chartData.value.data.labels = [];
             for (let i = 0; i < countryKey.length; i++) {
                 chartData.value.data.labels.push(countryKey[i].slice(2));
             }
             store.commit('setYears' ,countryKey )
             addDataChart(countryData , props.countryName , {
-                primary: 'red',
-                secondary: 'orange',
+                primary: '#ff6384',
+                secondary: '#ffc53f',
             });
         });
         
-        watch(()=> props.compareCountry , ()=>{
-            const anotherCountryData = getCountryDataByID([props.compareCountry])
-            addDataChart(anotherCountryData , props.compareCountry , {
-                primary: 'blue',
-                secondary: 'black',
+        watch(compareCountry , ()=>{
+            if (compareCountry.value === '') return
+            const anotherCountryData = getCountryDataByID([compareCountry.value])
+            addDataChart(anotherCountryData , compareCountry.value , {
+                primary: '#52c2c2',
+                secondary: '#3fa6eb',
             });
         })
 
@@ -219,7 +238,7 @@ export default {
             console.log('update isMobile');
         })
 
-        return { chartRef, chartData , options };
+        return { chartRef, chartData , options , clear , compareCountry };
     },
 };
 </script>
@@ -227,13 +246,37 @@ export default {
 
 <style lang="scss" scoped>
 $font-color: #404244;
-h2{
+.header{
     border-bottom: 1px dashed rgb(233, 233, 233);
-    padding-bottom: .5rem;
     margin-bottom: .5rem;
     color: $font-color;
     font-size: 1.65rem;
-    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .text{
+        font-weight: 700;
+        padding-bottom: .5rem;
+    }
+    .clear-btn{
+        font-size: .8rem;
+        font-weight: 600;
+        padding: .7rem 2rem;
+        color: #fff;
+        background-color: #2f80d0;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: .15s  background-color;
+
+        .icon{
+            margin-left: .4rem;
+        }
+
+        &:hover{
+            background-color: #5d9fe0;
+        }
+    }
     span{
         margin: 0 .25rem;
         font-size: 1.2rem;

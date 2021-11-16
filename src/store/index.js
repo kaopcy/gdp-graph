@@ -8,6 +8,10 @@ export const store = createStore({
         isDarkMode: false,
         RMSE: null,
         MSE: null,
+        MC: {
+            M: '',
+            C: ''
+        },
         currentCountry:{
             years: [],
             realPrice: [],
@@ -37,6 +41,7 @@ export const store = createStore({
             if ( payload.compareReal ) state.compareCountry.realPrice = payload.compareReal
             if ( payload.RMSE ) state.RMSE = payload.RMSE
             if ( payload.MSE ) state.MSE = payload.MSE
+            if ( payload.MC ) state.MC = payload.MC
         },
 
         setYears(state , payload){
@@ -54,6 +59,15 @@ export const store = createStore({
             state.compareCountry.years = []
             state.MSE = ''
             state.RMSE = ''
+            state.MC = {
+                M: '',
+                C: ''
+            }
+        },
+        clearCompareData(state){
+            state.compareCountry.predictedPrice = []
+            state.compareCountry.realPrice = []
+            state.compareCountry.years = []
         }
     },
     getters: {},

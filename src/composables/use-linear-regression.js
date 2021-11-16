@@ -53,13 +53,19 @@ export default function useLinearRegression(){
         const W = tf.matMul(tf.matMul(inverse , stack.transpose()) , prices)
         const z = tf.matMul(stack , W )
         
+        const MC = {
+            M: Array.from(W.dataSync())[0],
+            C: Array.from(W.dataSync())[1]
+        }
+
+        console.log(`years: ${Array.from(years.dataSync())}`);
         console.log(`normal value: ${newPrices}`);
         console.log(`predicted value: ${Array.from(z.dataSync())}`);
 
         const RMSE = Array.from(getRMSE(prices , z).dataSync())[0]
         const MSE = Array.from(getMSE(prices , z).dataSync())[0]
         
-        return { predictPrices: Array.from(z.dataSync()) , RMSE , MSE } 
+        return { predictPrices: Array.from(z.dataSync()) , RMSE , MSE , MC } 
     }
 
     return {

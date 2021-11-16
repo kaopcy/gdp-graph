@@ -92,6 +92,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;500;700&display=swap");
 
+
 * {
     margin: 0;
     padding: 0;
