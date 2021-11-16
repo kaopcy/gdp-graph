@@ -63,6 +63,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$font-color: #404144;
+
 @keyframes fade {
     0%{
         transform: translateX(100%);
@@ -121,6 +123,10 @@ export default {
     }
 
     .text{
+        margin-top: 3rem;
+        height: 600px;
+        width: 400px;
+        background-color: #fff;
         h1{
             margin-top: 3rem;
             margin-bottom: 1rem;
@@ -138,11 +144,15 @@ export default {
     }
 
     .table-container{
+        margin-top: 3rem;
         display: flex;
-        width: 700px;
+        width: 900px;
+        height: 600px;
         justify-content: space-between;
-        color: #fff;
+        color: $font-color;
         padding: 1rem;
+        background-color: #fff;
+
         @media (max-width: 640px) {
             align-items: flex-start;
             justify-content: flex-start;
@@ -153,12 +163,14 @@ export default {
         table{
             width: 100%;
             border-collapse: collapse;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            margin-left: 1rem;
             tr{
-                background-color: rgba(0, 0, 0, 0.603);
                 &:nth-child(1){
-                    background-color: rgba(255, 255, 255, 0.603);
-                    color: #000;
+                    color: $font-color;
                     font-size: 1.3rem;
+                    border-bottom: 1px dashed rgb(223, 221, 221);
+                    
                 }
             }
             th{

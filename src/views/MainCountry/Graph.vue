@@ -103,7 +103,7 @@ import { useRoute } from 'vue-router'
 import { store } from '../../store'
 import LinearRegressionChart from '../../components/LinearRegressionChart'
 import SidePost from '../../components/MainPost/SidePost.vue'
-import useCompareCountry from '../../composables/useCompareCountry' 
+import useCompareCountry from '../../composables/useCountry' 
 
 export default {
     name: 'Data',

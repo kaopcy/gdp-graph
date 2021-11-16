@@ -26,7 +26,7 @@ import zoomPlugin from "chartjs-plugin-zoom";
 
 import useFetch from "../composables/use-fetch";
 import useLinearRegression from "../composables/use-linear-regression";
-import useCompareCountry from '../composables/useCompareCountry'
+import useCompareCountry from '../composables/useCountry'
 
 Vue3ChartJs.registerGlobalPlugins([zoomPlugin]);
 

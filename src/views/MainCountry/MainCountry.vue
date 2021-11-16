@@ -9,6 +9,7 @@
 import { ref } from '@vue/reactivity'
 import { useRoute } from 'vue-router'
 import { onMounted } from '@vue/runtime-core'
+import { store } from '../../store'
 
 
 export default {
@@ -20,6 +21,7 @@ export default {
         
         onMounted(() => {
             console.log( route.params.id );
+            store.commit('clearCompareData')
         })
 
         return {

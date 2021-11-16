@@ -12,16 +12,19 @@ export const store = createStore({
             M: '',
             C: ''
         },
+
         currentCountry:{
             years: [],
             realPrice: [],
             predictedPrice: []
         },
+        
         compareCountry:{
             years: [],
             realPrice: [],
             predictedPrice: []
         }
+
     },
     mutations: {
         setIsMobile(state, payload) {
