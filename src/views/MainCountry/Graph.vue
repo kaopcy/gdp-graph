@@ -14,12 +14,14 @@
         <div class="right-wrapper">
             <h1>
                 Linear Regression
+                <fa :icon="['fas' , 'chart-bar']" class="icon" style="color:#bdbdbd; margin-left:.5rem" ></fa>
             </h1>
             <div class="graph-wrapper">
                 <LinearRegressionChart  :countryName="route.params.id" :compareCountry="compareCountry" />
             </div>
             <h1>
                 Data Table 
+                <fa :icon="['fas' , 'table']" class="icon" style="color:#bdbdbd; margin-left:.5rem" ></fa>
             </h1>
             <div class="table-data">
                 <div class="table">

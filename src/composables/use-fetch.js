@@ -27,6 +27,7 @@ export default function useFetch(){
     }
 
     const getCountryKeyByID = (name)=>{
+        console.log(`name: ${name}`);
         const rawData = GDP.value.find( e => e.CountryName.toLowerCase() === name.toLowerCase())
         const justKey = Object.keys(rawData).map( c=> c == '' || c== null ? 'null': c).slice(3)
         return justKey
@@ -50,6 +51,16 @@ export default function useFetch(){
         return countryName
     }
 
-    return { getCountryDataByID , getCountryKeyByID , getAllCountryName , getAllCountryNameFlag , GDP }
+    const getMostGDPbyID = ( name )=>{
+        const data = getCountryDataByID(name)[0]
+        return data.sort((a,b)=> a-b)[data.length-1]
+    }
+    
+    const getLeastGDPbyID = ( name )=>{
+        const data = getCountryDataByID(name)[0]
+        return data.sort((a,b)=> a-b)[0]
+    }
+
+    return { getCountryDataByID , getCountryKeyByID , getAllCountryName , getAllCountryNameFlag , getMostGDPbyID , getLeastGDPbyID , GDP }
 
 }

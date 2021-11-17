@@ -98,15 +98,27 @@ $font-color: #404244;
         font-weight: 300;
         line-height: 1.6rem ;
         .block{
+            position: relative;
             border-bottom: 1px dashed rgb(207, 207, 207);
             padding-bottom: .5rem;
             margin-bottom: 1rem;
+            &:hover{
+                &::after{
+                    position: absolute;
+                    color: rgb(101, 173, 255);
+                    top: 0;
+                    font-weight: 700;
+                    left: -20px;
+                    content: '#';
+                }
+            }
 
         }
         b{
             font-size: 1.25rem;
         }
         p{
+            
         }
         ul{
             padding-left: 2rem;
