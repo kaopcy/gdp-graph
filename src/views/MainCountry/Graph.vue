@@ -186,7 +186,7 @@ h1{
     .left-wrapper{
         position: relative;
         height: 630px;
-        flex: 2;
+        flex: 3;
         background-color: rgb(255, 255, 255);
         display: flex;
         padding-left: 2rem;
@@ -195,7 +195,7 @@ h1{
     .right-wrapper{
         position: relative;
         height: 630px;
-        flex: 5;
+        flex: 7;
         background-color: rgb(255, 255, 255);
         padding: 1rem;
         display: flex;
