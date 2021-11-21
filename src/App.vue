@@ -26,7 +26,7 @@
             <router-link to="/" class="link project-icon"
                 >ASEAN gdp</router-link
             >
-            <router-link to="" class="link about">ABOUT US</router-link>
+            <router-link to="/about" class="link about">ABOUT US</router-link>
         </div>
         <div
             class="black"
@@ -127,6 +127,7 @@ export default {
 
 body {
     background-color: var(--primary--color);
+    scroll-behavior: smooth;
 }
 #app {
     font-family: var(--primary--font);

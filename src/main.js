@@ -17,6 +17,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import {faFacebookSquare} from '@fortawesome/free-brands-svg-icons'
+import {faLine} from '@fortawesome/free-brands-svg-icons'
+import {faInstagramSquare} from '@fortawesome/free-brands-svg-icons'
 library.add(
     faSearch,
     faBars,
@@ -29,7 +32,10 @@ library.add(
     faTable,
     faBackward,
     faExternalLinkAlt,
-    faCalendarAlt
+    faCalendarAlt,
+    faFacebookSquare,
+    faLine,
+    faInstagramSquare
 );
 
 createApp(App)
