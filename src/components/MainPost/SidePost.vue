@@ -8,19 +8,19 @@
             <p><b>Linear Regression</b> </p>
             <p>
                 <span style="margin-left:1rem;font-weight:500">Y<span style="font-size:.65rem">predicted</span> = 
-                    <span style="color:green;font-size:.8rem;font-weight:400" >{{numberWithCommas(store.state.MC.M)}}</span> X + 
-                    <span style="color:red;font-size:.8rem;font-weight:400" >{{numberWithCommas(store.state.MC.C)}}</span>
+                    <span style="color:green;font-size:.8rem;font-weight:400" >{{numberWithCommas(currentCountry.MC.M)}}</span> X + 
+                    <span style="color:red;font-size:.8rem;font-weight:400" >{{numberWithCommas(currentCountry.MC.C)}}</span>
                 </span>
             </p>
             <ul style="margin-left:1.5rem">
                 <p>
                     <span style="font-weight:500; font-size:.8rem;">m = 
-                        <span style="color:green;font-size:.8rem;font-weight:400" >{{numberWithCommas(store.state.MC.M)}}</span>
+                        <span style="color:green;font-size:.8rem;font-weight:400" >{{numberWithCommas(currentCountry.MC.M)}}</span>
                     </span>
                 </p>
                 <p>
                     <span style="font-weight:500; font-size:.8rem;">c = 
-                        <span style="color:red;font-size:.8rem;font-weight:400" >{{numberWithCommas(store.state.MC.C)}}</span>
+                        <span style="color:red;font-size:.8rem;font-weight:400" >{{numberWithCommas(currentCountry.MC.C)}}</span>
                     </span>
                 </p>
             </ul>
@@ -29,13 +29,13 @@
         <div class="block">
             <p><b>Mean square error (MSE)</b> </p>
             <p><span style="font-weight:500; margin-left:.65rem">MSE</span> = Σ(P – R)2 / n </p>
-            <p style="color:green; font-weight:500">&nbsp; = {{numberWithCommas(store.state.MSE)}}</p>
+            <p style="color:green; font-weight:500">&nbsp; = {{numberWithCommas(currentCountry.MSE)}}</p>
         </div>
 
         <div class="block">
             <p style="margin-top:.4rem"><b>Root mean square error (RMSE)</b></p>
             <p><span style="font-weight:500; margin-left:.65rem">RMSE</span> = √[ Σ(P – R)2 / n ]</p>
-            <p style="color:green; font-weight:500">&nbsp; = {{numberWithCommas(store.state.RMSE)}}</p>
+            <p style="color:green; font-weight:500">&nbsp; = {{numberWithCommas(currentCountry.RMSE)}}</p>
         </div>
 
         <p style="margin-top:.6rem; font-weight: 700">where:</p>
@@ -55,6 +55,7 @@ import Dropdown from '../../components/MainPost/Dropdown.vue'
 import { useRoute } from 'vue-router'
 import { store } from '../../store'
 import { isInteger } from 'mathjs'
+import { computed } from '@vue/reactivity'
 
 export default {
     name: 'SidePost',
@@ -65,12 +66,13 @@ export default {
     setup() {
         const route = useRoute()
 
+        const currentCountry = computed(()=> store.state.currentCountry )
         const numberWithCommas = (x)=> {
             if (x)
                 return isInteger(x) ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : x.replace(/\B(?=(\d{3})+(?!\d))/g, ",") ;
         }
 
-        return { numberWithCommas , route , store }
+        return { numberWithCommas , route , currentCountry }
     }
 }
 </script>

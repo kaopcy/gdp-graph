@@ -13,7 +13,10 @@ import {
     faTable,
     faBackward,
     faExternalLinkAlt,
-    faCalendarAlt
+    faCalendarAlt,
+    faLink,
+    faUnlink,
+    faBrush
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -35,7 +38,10 @@ library.add(
     faCalendarAlt,
     faFacebookSquare,
     faLine,
-    faInstagramSquare
+    faInstagramSquare,
+    faLink,
+    faUnlink,
+    faBrush
 );
 
 createApp(App)

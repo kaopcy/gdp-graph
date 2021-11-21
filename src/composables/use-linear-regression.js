@@ -19,6 +19,13 @@ export default function useLinearRegression(){
         return prices.sub(predictPrices).square().mean()
     }
     
+    const getRsquare = (prices , predictPrices)=>{
+        const mean = prices.mean()
+        const upper = prices.sub(predictPrices).square().sum()
+        const lower = prices.sub(mean).square().sum()
+        return upper.div(lower).sub(1).abs()
+    }
+
     const getPredictPrice = ( newYears , newPrices )=>{
         newPrices = newPrices.map(e => 
             Number(e.toFixed(1))
@@ -62,8 +69,10 @@ export default function useLinearRegression(){
         console.log(`normal value: ${newPrices}`);
         console.log(`predicted value: ${Array.from(z.dataSync())}`);
 
-        const RMSE = Array.from(getRMSE(prices , z).dataSync())[0]
-        const MSE = Array.from(getMSE(prices , z).dataSync())[0]
+        const RMSE = Array.from(getRMSE(prices , z).dataSync())[0];
+        const MSE = Array.from(getMSE(prices , z).dataSync())[0];
+        const Rsquare = getRsquare(prices , z);
+        Rsquare.print()
         
         return { predictPrices: Array.from(z.dataSync()) , RMSE , MSE , MC } 
     }

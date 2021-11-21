@@ -41,13 +41,13 @@ export default {
     },
     setup() {
         const { getAllCountryName, getAllCountryNameFlag } = useFetch();
-        const { setCompareCountry } = useCompareCountry();
+        const { compareCountry , setCompareCountry } = useCompareCountry();
 
         const allCountry = getAllCountryName();
         const allFlag = getAllCountryNameFlag();
 
         const arrayOfSelectedCountry = ref([]);
-        const selectedCountry = ref(null);
+        const selectedCountry = ref(compareCountry);
 
         const filterdCountry = computed(() => {
             // return allCountry.filter(

@@ -2,10 +2,19 @@
     <div class="wrapper">
         <div class="header">
             <div class="text">
-                {{countryName}}  <span>vs</span>  {{compareCountry === '' ? '..' : compareCountry}}
+                {{ countryName }} <span>vs</span>
+                {{ compareCountry === "" ? ".." : compareCountry }}
             </div>
-            <div class="clear-btn" @click="clear">
-                CLEAR <fa :icon="['fas' , 'arrow-right']" class="icon"/>
+            <div
+                class="clear-btn"
+                @click="clear"
+                :style="
+                    `background-color:${compareCountry === '' ? '#b8d7f7' : ''};
+                     cursor:${compareCountry === '' ? 'unset' : 'pointer'};`
+
+                "
+            >
+                CLEAR <fa :icon="['fas', 'arrow-right']" class="icon" />
             </div>
         </div>
         <vue3-chart-js
@@ -20,13 +29,13 @@
 
 <script>
 import { onMounted, ref, watch } from "vue";
-import { store } from '../store'
+import { store } from "../store";
 import Vue3ChartJs from "@j-t-mcc/vue3-chartjs";
 import zoomPlugin from "chartjs-plugin-zoom";
 
 import useFetch from "../composables/use-fetch";
 import useLinearRegression from "../composables/use-linear-regression";
-import useCompareCountry from '../composables/useCountry'
+import useCompareCountry from "../composables/useCountry";
 
 Vue3ChartJs.registerGlobalPlugins([zoomPlugin]);
 
@@ -39,13 +48,12 @@ export default {
             type: String,
             require: true,
         },
-        
     },
     setup(props) {
         const { getCountryDataByID, getCountryKeyByID } = useFetch();
         const { getFasterPredictPrice } = useLinearRegression();
-        const { compareCountry , setCompareCountry } = useCompareCountry();
-        
+        const { compareCountry, setCompareCountry } = useCompareCountry();
+
         const countryData = getCountryDataByID([props.countryName]);
         const countryKey = getCountryKeyByID(props.countryName);
         const chartRef = ref(null);
@@ -53,7 +61,7 @@ export default {
         const options = {
             plugins: {
                 zoom: {
-                    pan:{
+                    pan: {
                         enabled: true,
                     },
                     zoom: {
@@ -101,7 +109,7 @@ export default {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                indexAxis: 'y',
+                indexAxis: "y",
                 legend: {
                     position: "top",
                     labels: {
@@ -125,59 +133,38 @@ export default {
                     },
                 },
             },
-            data: {
-            },
+            data: {},
         });
-        
-        const addDataChart = (CountryData , name , color ) => {
-            const days = []
-            for ( let i=0 ; i< CountryData[0].length ; i++ ) days.push(i)
-            
-            const { predictPrices , MSE , RMSE , MC } = getFasterPredictPrice(days, CountryData[0]);
 
-            
+        const addDataChart = (CountryData, name, color) => {
+            const days = [];
+            for (let i = 0; i < CountryData[0].length; i++) days.push(i);
 
-            if (store.state.currentCountry.predictedPrice.length == 0){
-                console.log(`w: ${MC.M} , C: ${MC.C}`);
-                store.commit('setPrice' , {
+            const { predictPrices, MSE, RMSE, MC } = getFasterPredictPrice(
+                days,
+                CountryData[0]
+            );
+
+            if (store.state.currentCountry.predictedPrice.length == 0) {
+                store.commit("setPrice", {
                     curReal: CountryData[0],
                     curPredict: predictPrices,
-                    MSE: MSE,
-                    RMSE: RMSE,
-                    MC: MC,
-                })
-            }
-            else{
-                store.commit('setPrice' , {
+                    curMSE: MSE,
+                    curRMSE: RMSE,
+                    curMC: MC,
+                });
+            } else {
+                store.commit("setPrice", {
                     compareReal: CountryData[0],
-                    comparePredict: predictPrices
-                })
+                    comparePredict: predictPrices,
+                    compareMSE: MSE,
+                    compareRMSE: RMSE,
+                    compareMC: MC,
+                });
             }
-            if (chartData.value.data.datasets.length < 4){
-                chartData.value.data.datasets.push({
-                    data: CountryData[0],
-                    type: "line",
-                    label: name,
-                    fill: false,
-                    borderColor: color.primary,
-                    backgroundColor: color.primary,
-                    borderWidth: 2,
-                    pointRadius: 2,
-                })
-                chartData.value.data.datasets.push({
-                    data: predictPrices,
-                    type: "line",
-                    label: `Linear ${name}`,
-                    backgroundColor: color.secondary,
-                    borderColor: color.secondary,
-                    color: color.secondary,
-                    pointRadius: 2,
-                    borderWidth: 2
-                })
 
-            }
-            else{
-                chartData.value.data.datasets[2] = ({
+            if (chartData.value.data.datasets.length < 4) {
+                chartData.value.data.datasets.push({
                     data: CountryData[0],
                     type: "line",
                     label: name,
@@ -186,8 +173,8 @@ export default {
                     backgroundColor: color.primary,
                     borderWidth: 2,
                     pointRadius: 2,
-                })
-                chartData.value.data.datasets[3] = ({
+                });
+                chartData.value.data.datasets.push({
                     data: predictPrices,
                     type: "line",
                     label: `Linear ${name}`,
@@ -195,90 +182,126 @@ export default {
                     borderColor: color.secondary,
                     color: color.secondary,
                     pointRadius: 2,
-                    borderWidth: 2
-                })
+                    borderWidth: 2,
+                });
+            } else {
+                chartData.value.data.datasets[2] = {
+                    data: CountryData[0],
+                    type: "line",
+                    label: name,
+                    fill: false,
+                    borderColor: color.primary,
+                    backgroundColor: color.primary,
+                    borderWidth: 2,
+                    pointRadius: 2,
+                };
+                chartData.value.data.datasets[3] = {
+                    data: predictPrices,
+                    type: "line",
+                    label: `Linear ${name}`,
+                    backgroundColor: color.secondary,
+                    borderColor: color.secondary,
+                    color: color.secondary,
+                    pointRadius: 2,
+                    borderWidth: 2,
+                };
             }
             console.log(`length : ${chartData.value.data.datasets.length}`);
             chartRef.value.update();
         };
 
-        const clear = ()=>{
-            if (chartData.value.data.datasets.length > 2){
-                chartData.value.data.datasets.pop()
-                chartData.value.data.datasets.pop()
-                store.commit('clearCompareData')
-                setCompareCountry('')
+        const clear = () => {
+            if (chartData.value.data.datasets.length > 2) {
+                chartData.value.data.datasets.pop();
+                chartData.value.data.datasets.pop();
+                store.commit("clearCompareData");
+                setCompareCountry("");
                 chartRef.value.update();
-
             }
-        }
+        };
 
         onMounted(() => {
             chartData.value.data.labels = [];
             for (let i = 0; i < countryKey.length; i++) {
                 chartData.value.data.labels.push(countryKey[i].slice(2));
             }
-            store.commit('setYears' ,countryKey )
-            addDataChart(countryData , props.countryName , {
-                primary: '#ff6384',
-                secondary: '#ffc53f',
+            store.commit("setYears", countryKey);
+            addDataChart(countryData, props.countryName, {
+                primary: "#ff6384",
+                secondary: "#ffc53f",
+            });
+            
+            if ( compareCountry.value !== '' ){
+                
+                const anotherCountryData = getCountryDataByID([
+                    compareCountry.value,
+                ]);
+
+                addDataChart(anotherCountryData, compareCountry.value, {
+                    primary: "#52c2c2",
+                    secondary: "#3fa6eb",
+                });
+            }
+
+        });
+
+        watch(compareCountry, () => {
+            if (compareCountry.value === "") return;
+            const anotherCountryData = getCountryDataByID([
+                compareCountry.value,
+            ]);
+            addDataChart(anotherCountryData, compareCountry.value, {
+                primary: "#52c2c2",
+                secondary: "#3fa6eb",
             });
         });
-        
-        watch(compareCountry , ()=>{
-            if (compareCountry.value === '') return
-            const anotherCountryData = getCountryDataByID([compareCountry.value])
-            addDataChart(anotherCountryData , compareCountry.value , {
-                primary: '#52c2c2',
-                secondary: '#3fa6eb',
-            });
-        })
 
-        watch(()=> store.state.isMobile , ()=>{
-            console.log('update isMobile');
-        })
+        watch(
+            () => store.state.isMobile,
+            () => {
+                console.log("update isMobile");
+            }
+        );
 
-        return { chartRef, chartData , options , clear , compareCountry };
+        return { chartRef, chartData, options, clear, compareCountry };
     },
 };
 </script>
 
-
 <style lang="scss" scoped>
 $font-color: #404244;
-.header{
+.header {
     border-bottom: 1px dashed rgb(233, 233, 233);
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
     color: $font-color;
     font-size: 1.65rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .text{
+    .text {
         font-weight: 700;
-        padding-bottom: .5rem;
+        padding-bottom: 0.5rem;
     }
-    .clear-btn{
-        font-size: .8rem;
+    .clear-btn {
+        font-size: 0.8rem;
         font-weight: 600;
-        padding: .7rem 2rem;
+        padding: 0.7rem 2rem;
         color: #fff;
         background-color: #2f80d0;
         border-radius: 5px;
         margin-bottom: 1rem;
         cursor: pointer;
-        transition: .15s  background-color;
-
-        .icon{
-            margin-left: .4rem;
+        transition: 0.15s background-color;
+        .icon {
+            margin-left: 0.4rem;
         }
 
-        &:hover{
+        &:hover {
             background-color: #5d9fe0;
         }
     }
-    span{
-        margin: 0 .25rem;
+    span {
+        margin: 0 0.25rem;
         font-size: 1.2rem;
         font-weight: 400;
     }
