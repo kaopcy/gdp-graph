@@ -57,6 +57,14 @@
                                 {{numberWithCommas(i - store.state.currentCountry.predictedPrice[index])}} 
                             </span>
                         </div>
+                        <div class="column" v-if=" !store.state.compareCountry.predictedPrice.length > 0">
+                            <span>Error %</span>
+                            <span v-for="(i,index) in store.state.currentCountry.realPrice" :key="i" 
+                                :style="i - store.state.currentCountry.predictedPrice[index] > 0 ?'color:green' : 'color:red'"
+                            >
+                                {{  getPercentageError(i, store.state.currentCountry.predictedPrice[index]) }} %
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="table" v-if="store.state.compareCountry.predictedPrice.length > 0">
@@ -92,6 +100,7 @@
                                 {{numberWithCommas(i - store.state.compareCountry.predictedPrice[index])}} 
                             </span>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -105,7 +114,8 @@ import { useRoute } from 'vue-router'
 import { store } from '../../store'
 import LinearRegressionChart from '../../components/LinearRegressionChart'
 import SidePost from '../../components/MainPost/SidePost.vue'
-import useCompareCountry from '../../composables/useCountry' 
+import useCountry from '../../composables/useCountry' 
+import { abs } from 'mathjs'
 
 export default {
     name: 'Data',
@@ -114,7 +124,7 @@ export default {
         SidePost,
     },
     setup() {
-        const { compareCountry } = useCompareCountry()
+        const { compareCountry , getCurrentCountryFlag , getCompareCountryFlag } = useCountry()
 
         const route = useRoute()
 
@@ -122,11 +132,18 @@ export default {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
+        const getPercentageError = (cur , pre)=>{
+            return (abs((cur - pre)) / (cur) * 100).toFixed(2)
+        }
+
         return {
             route,
             compareCountry,
             numberWithCommas,
-            store
+            store,
+            getPercentageError,
+            getCurrentCountryFlag,
+            getCompareCountryFlag
         }
     }
 }

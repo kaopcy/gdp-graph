@@ -6,23 +6,30 @@ export const store = createStore({
         isMobile: false,
         isLoading: false,
         isDarkMode: false,
-        RMSE: null,
-        MSE: null,
-        MC: {
-            M: '',
-            C: ''
-        },
+        
 
         currentCountry:{
             years: [],
             realPrice: [],
-            predictedPrice: []
+            predictedPrice: [],
+            RMSE: null,
+            MSE: null,
+            MC: {
+                M: '',
+                C: ''
+            },
         },
         
         compareCountry:{
             years: [],
             realPrice: [],
-            predictedPrice: []
+            predictedPrice: [],
+            RMSE: null,
+            MSE: null,
+            MC: {
+                M: '',
+                C: ''
+            },
         }
 
     },
@@ -40,11 +47,15 @@ export const store = createStore({
         setPrice(state , payload){
             if ( payload.curPredict ) state.currentCountry.predictedPrice = payload.curPredict
             if ( payload.curReal ) state.currentCountry.realPrice = payload.curReal
+            if ( payload.curRMSE ) state.currentCountry.RMSE = payload.curRMSE
+            if ( payload.curMSE ) state.currentCountry.MSE = payload.curMSE
+            if ( payload.curMC ) state.currentCountry.MC = payload.curMC
+
             if ( payload.comparePredict ) state.compareCountry.predictedPrice = payload.comparePredict
             if ( payload.compareReal ) state.compareCountry.realPrice = payload.compareReal
-            if ( payload.RMSE ) state.RMSE = payload.RMSE
-            if ( payload.MSE ) state.MSE = payload.MSE
-            if ( payload.MC ) state.MC = payload.MC
+            if ( payload.compareRMSE ) state.compareCountry.RMSE = payload.compareRMSE
+            if ( payload.compareMSE ) state.compareCountry.MSE = payload.compareMSE
+            if ( payload.compareMC ) state.compareCountry.MC = payload.compareMC
         },
 
         setYears(state , payload){
@@ -56,13 +67,10 @@ export const store = createStore({
         clearCountryData(state){
             state.currentCountry.predictedPrice = []
             state.currentCountry.realPrice = []
-            state.compareCountry.predictedPrice = []
-            state.compareCountry.realPrice = []
             state.currentCountry.years = []
-            state.compareCountry.years = []
-            state.MSE = ''
-            state.RMSE = ''
-            state.MC = {
+            state.currentCountry.MSE = ''
+            state.currentCountry.RMSE = ''
+            state.currentCountry.MC = {
                 M: '',
                 C: ''
             }
@@ -71,6 +79,12 @@ export const store = createStore({
             state.compareCountry.predictedPrice = []
             state.compareCountry.realPrice = []
             state.compareCountry.years = []
+            state.compareCountry.MSE = ''
+            state.compareCountry.RMSE = ''
+            state.compareCountry.MC = {
+                M: '',
+                C: ''
+            }
         }
     },
     getters: {},

@@ -15,6 +15,8 @@
 <script>
 import { useRoute } from 'vue-router'
 import { onMounted, ref } from '@vue/runtime-core'
+import { store } from '../../store'
+
 
 import BottomBar from '../../components/MainPost/BottomBar.vue'
 
@@ -25,12 +27,11 @@ export default {
     },
     setup(){
         const route = useRoute()
-
         const isBottomBar = ref(false)
 
         onMounted(() => {
-            console.log(  );
-            console.log(route.name);
+            store.commit('clearCountryData')
+            store.commit('clearCompareData')
         })
 
         return {

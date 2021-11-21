@@ -9,19 +9,19 @@
 import { ref } from '@vue/reactivity'
 import { useRoute } from 'vue-router'
 import { onMounted } from '@vue/runtime-core'
-import { store } from '../../store'
-
+import useCountry from '../../composables/useCountry'
 
 export default {
     name: 'MainCountry',
     setup() {
         const route = useRoute()
+        const { setCurrentCountry } = useCountry()
 
         const isBottomBar = ref(false)
         
         onMounted(() => {
+            setCurrentCountry(route.params.id)
             console.log( route.params.id );
-            store.commit('clearCompareData')
         })
 
         return {
